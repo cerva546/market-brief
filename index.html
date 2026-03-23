@@ -873,80 +873,63 @@ async function loadMarketGroup(defs, isCrypto) {
 async function refreshMarkets() {
   document.getElementById('data-note-sidebar').textContent = 'Refreshing…';
 
-  /* Sidebar (main 6) */
-  const sidebarDefs = [
-    {sym:'SPY',name:'S&P 500',sub:'US Large Cap'},
-    {sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},
-    {sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},
-    {sym:'GLD',name:'Gold',sub:'ETF'},
-    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'},
-  ];
-  const [sidebarResults, btcResult] = await Promise.all([
-    Promise.all(sidebarDefs.map(m => polygonQuote(m.sym))),
-    btcQuote()
+  const allStockSyms = [...new Set([
+    'SPY','QQQ','DIA','GLD','USO',
+    ...MKT_US.map(m=>m.sym), ...MKT_TECH.map(m=>m.sym),
+    ...MKT_COMMODITIES.map(m=>m.sym), ...MKT_FIXED.map(m=>m.sym),
+    ...TICKER_ALL
+  ])];
+
+  const [stockMap, cryptoMap] = await Promise.all([
+    batchQuotes(allStockSyms),
+    fetchAllCrypto()
   ]);
 
-  /* Cache results */
-  sidebarDefs.forEach((m,i) => { if(sidebarResults[i]) mktCache[m.sym] = sidebarResults[i]; });
-  if (btcResult) mktCache['BTC'] = btcResult;
+  Object.assign(mktCache, stockMap, cryptoMap);
 
-  /* Render sidebar */
-  let html = sidebarDefs.map((m,i) => mktRowHtml(m.name, m.sub, sidebarResults[i])).join('');
-  /* Refresh all crypto in background */
-  const allCrypto = await fetchAllCrypto();
-  Object.entries(CRYPTO_IDS).forEach(([id,sym])=>{ if(allCrypto[sym]) mktCache[sym]=allCrypto[sym]; });
-  html += mktRowHtml('Bitcoin','BTC 24h', allCrypto['BTC']);
-  html += mktRowHtml('Ethereum','ETH 24h', allCrypto['ETH']);
-  html += mktRowHtml('Solana','SOL 24h', allCrypto['SOL']);
+  const sidebarDefs = [
+    {sym:'SPY',name:'S&P 500',sub:'ETF'},{sym:'QQQ',name:'Nasdaq 100',sub:'ETF'},
+    {sym:'DIA',name:'Dow Jones',sub:'ETF'},{sym:'GLD',name:'Gold',sub:'ETF'},
+    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'},
+  ];
+  let html = sidebarDefs.map(m=>mktRowHtml(m.name,m.sub,mktCache[m.sym])).join('');
+  html += mktRowHtml('Bitcoin','BTC 24h',mktCache['BTC']);
+  html += mktRowHtml('Ethereum','ETH 24h',mktCache['ETH']);
+  html += mktRowHtml('Solana','SOL 24h',mktCache['SOL']);
   document.getElementById('market-table-sidebar').innerHTML = html;
 
-  const gotAny = sidebarResults.some(Boolean) || !!btcResult;
+  const gotAny = Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0;
   document.getElementById('data-note-sidebar').textContent = gotAny
-    ? 'Finnhub (real-time) · CoinGecko (crypto live 24h)'
-    : 'Data unavailable — markets may be closed or API blocked. Try opening via a local server.';
+    ? 'Finnhub real-time · CoinGecko crypto live 24h'
+    : 'Data unavailable — check Vercel env vars or refresh';
 
-  /* Full markets page */
-  await renderMarketsPage();
-
-  /* Ticker */
-  if (gotAny) buildTicker();
+  renderMarketsPage();
+  buildTicker();
 }
 
 async function renderMarketsPage() {
-  const allGroups = [MKT_US, MKT_TECH, MKT_COMMODITIES, MKT_FIXED];
-  const [usR, techR, commR, fixedR, btcR] = await Promise.all([
-    Promise.all(MKT_US.map(m => mktCache[m.sym] ? Promise.resolve(mktCache[m.sym]) : polygonQuote(m.sym))),
-    Promise.all(MKT_TECH.map(m => mktCache[m.sym] ? Promise.resolve(mktCache[m.sym]) : polygonQuote(m.sym))),
-    Promise.all(MKT_COMMODITIES.map(m => mktCache[m.sym] ? Promise.resolve(mktCache[m.sym]) : polygonQuote(m.sym))),
-    Promise.all(MKT_FIXED.map(m => mktCache[m.sym] ? Promise.resolve(mktCache[m.sym]) : polygonQuote(m.sym))),
-    mktCache['BTC'] ? Promise.resolve(mktCache['BTC']) : btcQuote()
-  ]);
-
-  document.getElementById('mkt-us').innerHTML          = MKT_US.map((m,i) => mktRowHtml(m.name, m.sym, usR[i])).join('');
-  document.getElementById('mkt-tech').innerHTML        = MKT_TECH.map((m,i) => mktRowHtml(m.name, m.sym, techR[i])).join('');
-  /* Render all 6 cryptos */
-  const cryptoAll = await fetchAllCrypto();
-  Object.entries(CRYPTO_IDS).forEach(([id,sym])=>{ if(cryptoAll[sym]) mktCache[sym]=cryptoAll[sym]; });
-  document.getElementById('mkt-crypto').innerHTML = Object.entries(CRYPTO_IDS).map(([id,sym])=>
+  document.getElementById('mkt-us').innerHTML          = MKT_US.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-tech').innerHTML        = MKT_TECH.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-fixed').innerHTML       = MKT_FIXED.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  const cryptoEntries = Object.entries(CRYPTO_IDS);
+  document.getElementById('mkt-crypto').innerHTML      = cryptoEntries.map(([id,sym])=>
     mktRowHtml(CRYPTO_NAMES[sym]||sym, sym, mktCache[sym])
   ).join('');
-  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map((m,i) => mktRowHtml(m.name, m.sym, commR[i])).join('');
-  document.getElementById('mkt-fixed').innerHTML       = MKT_FIXED.map((m,i) => mktRowHtml(m.name, m.sym, fixedR[i])).join('');
-  document.getElementById('data-note-markets').textContent = 'Stocks: Finnhub real-time quotes · Crypto: CoinGecko live 24h change';
+  document.getElementById('data-note-markets').textContent =
+    'Stocks: Finnhub real-time · Crypto: CoinGecko live 24h · May be delayed outside market hours';
 }
 
 async function buildTicker() {
-  const results = await Promise.all(TICKER_ALL.map(s => mktCache[s] ? Promise.resolve(mktCache[s]) : polygonQuote(s)));
-  const btc = mktCache['BTC'] || await btcQuote();
-  const all = [...results.filter(Boolean)];
-  if (btc) all.push(btc);
+  const stockItems  = TICKER_ALL.map(s=>mktCache[s]).filter(Boolean);
+  const cryptoItems = Object.values(CRYPTO_IDS).map(sym=>mktCache[sym]).filter(Boolean);
+  const all = [...stockItems,...cryptoItems];
   if (!all.length) return;
   const doubled = [...all,...all];
-  const html = doubled.map(r => {
-    const up = r.chg >= 0;
-    const p  = r.price >= 1000 ? r.price.toLocaleString('en-US',{maximumFractionDigits:0}) : r.price.toFixed(2);
-    const c  = (up?'+':'') + r.pct.toFixed(2) + '%';
-    return `<span class="t-item"><span class="sym">${r.sym}</span>${p} <span class="${up?'t-up':'t-dn'}">${c}</span></span>`;
+  const html = doubled.map(r=>{
+    const up = r.chg>=0;
+    const p  = r.price>=10000 ? r.price.toLocaleString('en-US',{maximumFractionDigits:0}) : r.price>=1 ? r.price.toFixed(2) : r.price.toFixed(4);
+    return `<span class="t-item"><span class="sym">${r.sym}</span>${p} <span class="${up?'t-up':'t-dn'}">${up?'+':''}${r.pct.toFixed(2)}%</span></span>`;
   }).join('');
   document.getElementById('ticker-track').innerHTML = html;
 }
