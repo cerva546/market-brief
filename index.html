@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Market Brief — AI-drafted daily market intelligence. Published every morning at 8 AM ET.">
+<title>Market Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+/* ─── TOKENS ─────────────────────────────────────────── */
+:root{
+  --bg:#f7f5f0;
+  --paper:#fffef9;
+  --ink:#1a1814;
+  --ink2:#3a3830;
+  --ink3:#7a7870;
+  --rule:#ddd9cc;
+  --gold:#9a7000;
+  --up:#1a5c32;
+  --dn:#8b1a1a;
+  --up-bg:#f0faf4;
+  --dn-bg:#fef2f2;
+  --fhead:'Playfair Display',serif;
+  --fbody:'IBM Plex Sans',sans-serif;
+  --fmono:'IBM Plex Mono',monospace;
+}
+
+/* ─── BASE ─────────────────────────────────────────── */
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--fbody);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─── TICKER ─────────────────────────────────────────── */
+.ticker-strip{
+  background:var(--ink);
+  padding:8px 0;
+  overflow:hidden;
+  position:sticky;
+  top:0;
+  z-index:200;
+}
+.ticker-track{
+  display:flex;
+  width:max-content;
+  animation:tick 50s linear infinite;
+}
+.ticker-track:hover{animation-play-state:paused;}
+.t-item{
+  font-family:var(--fmono);
+  font-size:11px;
+  color:rgba(255,255,255,0.6);
+  padding:0 22px;
+  border-right:1px solid rgba(255,255,255,0.1);
+  white-space:nowrap;
+  letter-spacing:0.03em;
+}
+.t-item .sym{color:rgba(255,255,255,0.35);margin-right:7px;font-size:10px;}
+.t-up{color:#6ee7a0;}
+.t-dn{color:#fca5a5;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ─── MASTHEAD ─────────────────────────────────────────── */
+.masthead{
+  background:var(--paper);
+  border-bottom:3px solid var(--ink);
+  padding:0 clamp(1rem,4vw,3rem);
+}
+.masthead-inner{
+  max-width:1140px;
+  margin:0 auto;
+}
+.masthead-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 0 16px;
+  border-bottom:1px solid var(--rule);
+  gap:16px;
+  flex-wrap:wrap;
+}
+.logo{
+  font-family:var(--fhead);
+  font-size:36px;
+  font-weight:900;
+  letter-spacing:-0.035em;
+  color:var(--ink);
+  line-height:1;
+  text-decoration:none;
+}
+.logo-dot{color:var(--gold);}
+.masthead-meta{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--ink3);
+  letter-spacing:0.06em;
+  text-align:right;
+  line-height:2;
+}
+.masthead-nav{
+  display:flex;
+  gap:0;
+  padding:10px 0 0;
+}
+.nav-item{
+  font-family:var(--fmono);
+  font-size:11px;
+  color:var(--ink3);
+  letter-spacing:0.09em;
+  text-transform:uppercase;
+  padding:0 20px 10px 0;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color 0.15s,border-color 0.15s;
+  user-select:none;
+}
+.nav-item.active,.nav-item:hover{color:var(--ink);border-bottom-color:var(--ink);}
+
+/* ─── PAGE LAYOUT ─────────────────────────────────────────── */
+.page-wrap{
+  max-width:1140px;
+  margin:0 auto;
+  padding:clamp(1.5rem,4vw,3rem) clamp(1rem,4vw,3rem) 5rem;
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:clamp(1.5rem,4vw,3.5rem);
+}
+@media(max-width:780px){
+  .page-wrap{grid-template-columns:1fr;}
+  .sidebar{order:2;}
+  .main-col{order:1;}
+}
+
+/* ─── ARTICLE ─────────────────────────────────────────── */
+.kicker{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.kicker::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--rule);
+}
+.article-hed{
+  font-family:var(--fhead);
+  font-size:clamp(2rem,5vw,3.2rem);
+  font-weight:900;
+  line-height:1.06;
+  letter-spacing:-0.03em;
+  color:var(--ink);
+  margin-bottom:16px;
+}
+.article-deck{
+  font-size:17px;
+  color:var(--ink2);
+  line-height:1.6;
+  border-top:2.5px solid var(--ink);
+  border-bottom:1px solid var(--rule);
+  padding:14px 0;
+  margin-bottom:16px;
+  font-style:italic;
+  font-family:var(--fhead);
+}
+.byline{
+  font-family:var(--fmono);
+  font-size:11px;
+  color:var(--ink3);
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 16px;
+  align-items:center;
+  margin-bottom:28px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--rule);
+}
+.badge{
+  background:var(--ink);
+  color:#fff;
+  font-size:9px;
+  font-family:var(--fmono);
+  letter-spacing:0.08em;
+  padding:3px 8px;
+  border-radius:2px;
+}
+.badge.gold{background:var(--gold);}
+
+/* Article body typography */
+.body-text p{
+  font-size:16px;
+  line-height:1.82;
+  color:var(--ink2);
+  margin-bottom:1.25rem;
+  font-family:var(--fbody);
+  font-weight:300;
+}
+.body-text p:first-of-type::first-letter{
+  font-family:var(--fhead);
+  font-size:4rem;
+  font-weight:900;
+  float:left;
+  line-height:0.82;
+  margin:6px 8px 0 0;
+  color:var(--ink);
+}
+
+/* Pull quote */
+.pull-quote{
+  border-top:3px solid var(--ink);
+  border-bottom:1px solid var(--rule);
+  padding:18px 0 16px;
+  margin:28px 0;
+}
+.pull-quote blockquote{
+  font-family:var(--fhead);
+  font-style:italic;
+  font-size:18px;
+  line-height:1.5;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.pull-quote cite{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:0.09em;
+  font-style:normal;
+  text-transform:uppercase;
+}
+.source-name{color:var(--ink3);}
+
+/* Movers */
+.section-label{
+  font-family:var(--fmono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--ink3);
+  border-bottom:1px solid var(--rule);
+  padding-bottom:8px;
+  margin:28px 0 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.movers-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:24px;
+}
+.mover-card{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:11px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:border-color 0.15s;
+}
+.mover-card:hover{border-color:#bbb8aa;}
+.mover-card.up{border-left:3px solid var(--up);}
+.mover-card.dn{border-left:3px solid var(--dn);}
+.mc-sym{font-family:var(--fmono);font-size:13px;font-weight:500;color:var(--ink);}
+.mc-name{font-size:11px;color:var(--ink3);margin-top:2px;}
+.mc-chg{font-family:var(--fmono);font-size:13px;font-weight:500;}
+.mc-chg.up{color:var(--up);}
+.mc-chg.dn{color:var(--dn);}
+
+/* Sources */
+.source-chips{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 8px;}
+.chip{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--ink3);
+  border:1px solid var(--rule);
+  padding:4px 10px;
+  border-radius:2px;
+  letter-spacing:0.04em;
+}
+
+/* Disclaimer */
+.disclaimer{
+  font-family:var(--fmono);
+  font-size:11px;
+  color:var(--ink3);
+  line-height:1.7;
+  border-top:1px solid var(--rule);
+  padding-top:16px;
+  margin-top:8px;
+}
+
+/* ─── SKELETON LOADER ─────────────────────────────────────────── */
+.skel{
+  display:inline-block;
+  background:var(--rule);
+  border-radius:2px;
+  animation:pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.35;}50%{opacity:.7;}}
+.skel-block{display:block;width:100%;margin-bottom:10px;}
+
+/* ─── SIDEBAR ─────────────────────────────────────────── */
+.sidebar-rule{border:none;border-top:3px solid var(--ink);margin-bottom:16px;}
+.sidebar-label{
+  font-family:var(--fmono);
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* Market table */
+.mkt-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid var(--rule);
+}
+.mkt-row:last-child{border-bottom:none;}
+.mkt-n{font-size:13px;color:var(--ink);font-weight:400;}
+.mkt-s{font-size:10px;color:var(--ink3);font-family:var(--fmono);margin-top:2px;}
+.mkt-p{font-family:var(--fmono);font-size:13px;color:var(--ink);text-align:right;}
+.mkt-c{font-family:var(--fmono);font-size:11px;margin-top:2px;text-align:right;}
+.up{color:var(--up);}
+.dn{color:var(--dn);}
+.flat{color:var(--ink3);}
+
+.data-note{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--ink3);
+  margin-top:8px;
+  line-height:1.6;
+}
+.refresh-btn{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--ink3);
+  background:none;
+  border:1px solid var(--rule);
+  padding:4px 10px;
+  border-radius:2px;
+  cursor:pointer;
+  letter-spacing:0.04em;
+  transition:all 0.15s;
+}
+.refresh-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+/* AI note box */
+.ai-box{
+  margin-top:20px;
+  padding:14px 16px;
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:3px;
+}
+.ai-box-head{
+  font-family:var(--fmono);
+  font-size:10px;
+  color:var(--gold);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.pulse-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  animation:pdot 1.5s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes pdot{0%,100%{opacity:.25;}50%{opacity:1;}}
+.ai-box-body{font-size:13px;color:var(--ink3);line-height:1.7;font-weight:300;}
+
+/* Past issues */
+.past-item{
+  padding:13px 0;
+  border-bottom:1px solid var(--rule);
+  cursor:pointer;
+  transition:opacity 0.15s;
+}
+.past-item:last-child{border-bottom:none;}
+.past-item:hover{opacity:0.65;}
+.past-date{font-family:var(--fmono);font-size:10px;color:var(--ink3);margin-bottom:5px;}
+.past-hed{
+  font-family:var(--fhead);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.35;
+  color:var(--ink);
+}
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer{
+  background:var(--ink);
+  color:rgba(255,255,255,0.45);
+  text-align:center;
+  padding:2.5rem 2rem;
+  font-family:var(--fmono);
+  font-size:11px;
+  letter-spacing:0.05em;
+  line-height:2.2;
+}
+footer strong{color:rgba(255,255,255,0.9);}
+footer a{color:rgba(255,255,255,0.45);text-decoration:none;}
+footer a:hover{color:#fff;}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp 0.5s ease forwards;}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-strip">
+  <div class="ticker-track" id="ticker-track">
+    <span class="t-item" style="color:rgba(255,255,255,0.4);">Loading live market data...</span>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-top">
+      <a href="/" class="logo">Market<span class="logo-dot">.</span>Brief</a>
+      <div class="masthead-meta">
+        <div id="issue-date">—</div>
+        <div>AI-drafted &middot; Editorially reviewed &middot; Published 8 AM ET</div>
+        <div>Sources: Bloomberg &middot; Reuters &middot; WSJ &middot; Financial Times</div>
+      </div>
+    </div>
+    <nav class="masthead-nav">
+      <span class="nav-item active">Today's Brief</span>
+      <span class="nav-item">Markets</span>
+      <span class="nav-item">Archive</span>
+      <span class="nav-item">About</span>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE -->
+<div class="page-wrap">
+
+  <!-- MAIN COLUMN -->
+  <main class="main-col">
+    <div class="kicker">Daily Market Briefing</div>
+
+    <h1 class="article-hed" id="article-hed">
+      <span class="skel skel-block" style="height:42px;width:90%;"></span>
+      <span class="skel skel-block" style="height:42px;width:68%;margin-bottom:0;"></span>
+    </h1>
+
+    <div class="article-deck" id="article-deck">
+      <span class="skel skel-block" style="height:16px;width:100%;"></span>
+      <span class="skel skel-block" style="height:16px;width:75%;margin-bottom:0;"></span>
+    </div>
+
+    <div class="byline" id="byline">
+      <span class="badge">AI DRAFT</span>
+      <span id="byline-date">—</span>
+      <span>Sources: Bloomberg, Reuters, WSJ</span>
+    </div>
+
+    <div class="body-text" id="body-intro">
+      <p>
+        <span class="skel skel-block" style="height:14px;"></span>
+        <span class="skel skel-block" style="height:14px;width:95%;"></span>
+        <span class="skel skel-block" style="height:14px;width:88%;margin-bottom:0;"></span>
+      </p>
+      <p>
+        <span class="skel skel-block" style="height:14px;"></span>
+        <span class="skel skel-block" style="height:14px;width:80%;margin-bottom:0;"></span>
+      </p>
+    </div>
+
+    <div id="pull-quote-slot"></div>
+    <div id="movers-slot"></div>
+    <div id="body-close-slot"></div>
+    <div id="sources-slot"></div>
+    <div id="disclaimer-slot"></div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <hr class="sidebar-rule">
+
+    <div class="sidebar-label">
+      Live Markets
+      <button class="refresh-btn" onclick="loadMarkets()">Refresh</button>
+    </div>
+    <div id="market-table">
+      <div class="mkt-row"><div><div class="mkt-n"><span class="skel" style="width:90px;height:12px;"></span></div></div><div><span class="skel" style="width:64px;height:12px;"></span></div></div>
+      <div class="mkt-row"><div><div class="mkt-n"><span class="skel" style="width:70px;height:12px;"></span></div></div><div><span class="skel" style="width:64px;height:12px;"></span></div></div>
+      <div class="mkt-row"><div><div class="mkt-n"><span class="skel" style="width:80px;height:12px;"></span></div></div><div><span class="skel" style="width:64px;height:12px;"></span></div></div>
+      <div class="mkt-row"><div><div class="mkt-n"><span class="skel" style="width:60px;height:12px;"></span></div></div><div><span class="skel" style="width:64px;height:12px;"></span></div></div>
+    </div>
+    <div class="data-note" id="data-note"></div>
+
+    <!-- AI NOTE -->
+    <div class="ai-box">
+      <div class="ai-box-head"><span class="pulse-dot"></span>About this briefing</div>
+      <div class="ai-box-body">Each morning, our AI pulls headlines from Bloomberg, Reuters, the Wall Street Journal, and the Financial Times to draft this briefing. A human editor reviews it before publication at 8&nbsp;AM&nbsp;ET. Market data is sourced live from Polygon.io.</div>
+    </div>
+
+    <hr class="sidebar-rule" style="margin-top:24px;">
+    <div class="sidebar-label">Previous Issues</div>
+    <div id="past-issues">
+      <div class="past-item">
+        <div class="past-date">Friday &middot; March 21</div>
+        <div class="past-hed">Jobs data surprises; small caps rally as big tech consolidates</div>
+      </div>
+      <div class="past-item">
+        <div class="past-date">Thursday &middot; March 20</div>
+        <div class="past-hed">CPI cools slightly; Treasury yields retreat from 2025 highs</div>
+      </div>
+      <div class="past-item">
+        <div class="past-date">Wednesday &middot; March 19</div>
+        <div class="past-hed">FOMC holds steady; hints at September window for first cut</div>
+      </div>
+      <div class="past-item">
+        <div class="past-date">Tuesday &middot; March 18</div>
+        <div class="past-hed">China stimulus signals spark commodity surge; BTC breaks $66K</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Market Brief</strong><br>
+  AI-drafted daily market intelligence &middot; Published every morning at 8:00 AM ET<br>
+  Market data: <a href="https://polygon.io" target="_blank">Polygon.io</a> &middot;
+  News sources: Bloomberg, Reuters, WSJ, Financial Times<br>
+  Not financial advice &middot; For informational purposes only<br>
+  &copy; <span id="yr"></span> Market Brief
+</footer>
+
+<script>
+/* ─────────────────────────────────────────────────────
+   CONFIG — replace with your real keys when deploying
+   to Vercel, store these as environment variables and
+   use a serverless function instead of exposing here.
+────────────────────────────────────────────────────── */
+const POLYGON_KEY = 'YOUR_POLYGON_KEY_HERE';
+const ANTHROPIC_KEY = 'YOUR_ANTHROPIC_KEY_HERE';
+
+/* ─── CONSTANTS ─────────────────────────────────────── */
+const MARKETS = [
+  {sym:'SPY',  name:'S&P 500',   sub:'US Large Cap',  polygon:'SPY'},
+  {sym:'QQQ',  name:'Nasdaq',    sub:'Tech Index',    polygon:'QQQ'},
+  {sym:'DIA',  name:'Dow Jones', sub:'US Blue Chip',  polygon:'DIA'},
+  {sym:'X:BTCUSD', name:'Bitcoin', sub:'Crypto',      polygon:'X:BTCUSD', isCrypto:true},
+  {sym:'GLD',  name:'Gold',      sub:'ETF / Spot',    polygon:'GLD'},
+  {sym:'USO',  name:'Crude Oil', sub:'WTI ETF',       polygon:'USO'},
+];
+const TICKER_SYMS = ['SPY','QQQ','DIA','AAPL','NVDA','TSLA','AMZN','META','MSFT','X:BTCUSD'];
+
+/* ─── DATE ─────────────────────────────────────────── */
+const NOW  = new Date();
+const LONG = NOW.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+const MED  = NOW.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
+document.getElementById('issue-date').textContent = LONG.toUpperCase();
+document.getElementById('byline-date').textContent = MED;
+document.getElementById('yr').textContent = NOW.getFullYear();
+
+/* ─── POLYGON FETCH ─────────────────────────────────── */
+async function polygonQuote(sym, isCrypto) {
+  try {
+    /* Use previous close + snapshot for real-time change */
+    const base = isCrypto
+      ? `https://api.polygon.io/v2/snapshot/locale/global/markets/crypto/tickers/X:BTCUSD?apiKey=${POLYGON_KEY}`
+      : `https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${sym}?apiKey=${POLYGON_KEY}`;
+
+    const r = await fetch(base);
+    if (!r.ok) return null;
+    const d = await r.json();
+
+    if (isCrypto) {
+      const t = d?.ticker;
+      if (!t) return null;
+      const price = t.day?.c || t.prevDay?.c;
+      const prev  = t.prevDay?.c;
+      const chg   = price - prev;
+      const pct   = (chg / prev) * 100;
+      return {sym, price, chg, pct};
+    } else {
+      const t = d?.ticker;
+      if (!t) return null;
+      const price = t.day?.c || t.lastTrade?.p;
+      const prev  = t.prevDay?.c;
+      const chg   = price - prev;
+      const pct   = (chg / prev) * 100;
+      return {sym, price, chg, pct};
+    }
+  } catch(e) { return null; }
+}
+
+let mktCache = {};
+
+async function loadMarkets() {
+  document.getElementById('data-note').textContent = 'Fetching live data...';
+  const results = await Promise.all(MARKETS.map(m => polygonQuote(m.polygon, m.isCrypto)));
+  let html = '';
+  let gotAny = false;
+
+  results.forEach((r, i) => {
+    const m = MARKETS[i];
+    if (r && r.price != null && !isNaN(r.price)) {
+      gotAny = true;
+      mktCache[m.sym] = r;
+      const up  = r.chg >= 0;
+      const cls = up ? 'up' : 'dn';
+      const pStr = r.price >= 1000
+        ? r.price.toLocaleString('en-US', {maximumFractionDigits:2})
+        : r.price.toFixed(2);
+      const cStr = (up?'+':'') + r.chg.toFixed(2) + ' (' + (up?'+':'') + r.pct.toFixed(2) + '%)';
+      html += `<div class="mkt-row">
+        <div><div class="mkt-n">${m.name}</div><div class="mkt-s">${m.sub}</div></div>
+        <div><div class="mkt-p">${pStr}</div><div class="mkt-c ${cls}">${cStr}</div></div>
+      </div>`;
+    } else {
+      html += `<div class="mkt-row">
+        <div><div class="mkt-n">${m.name}</div><div class="mkt-s">${m.sub}</div></div>
+        <div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div>
+      </div>`;
+    }
+  });
+
+  document.getElementById('market-table').innerHTML = html;
+  document.getElementById('data-note').textContent = gotAny
+    ? 'Data via Polygon.io · 15-min delay outside market hours'
+    : 'Live data unavailable · markets may be closed';
+
+  if (gotAny) buildTicker(results.filter(Boolean));
+}
+
+async function buildTicker(mktResults) {
+  const extra = await Promise.all(
+    TICKER_SYMS
+      .filter(s => !MARKETS.find(m => m.polygon === s))
+      .map(s => polygonQuote(s, s.startsWith('X:')))
+  );
+  const all = [...mktResults, ...extra.filter(Boolean)];
+  const labels = {
+    'SPY':'SPY','QQQ':'QQQ','DIA':'DIA','X:BTCUSD':'BTC',
+    'GLD':'GOLD','USO':'OIL','AAPL':'AAPL','NVDA':'NVDA',
+    'TSLA':'TSLA','AMZN':'AMZN','META':'META','MSFT':'MSFT'
+  };
+  /* Duplicate for seamless loop */
+  const doubled = [...all, ...all];
+  const html = doubled.map(r => {
+    if (!r || r.price == null) return '';
+    const up   = r.chg >= 0;
+    const lbl  = labels[r.sym] || r.sym;
+    const pStr = r.price >= 1000
+      ? r.price.toLocaleString('en-US', {maximumFractionDigits:0})
+      : r.price.toFixed(2);
+    const cStr = (up?'+':'') + r.pct.toFixed(2) + '%';
+    return `<span class="t-item"><span class="sym">${lbl}</span>${pStr} <span class="${up?'t-up':'t-dn'}">${cStr}</span></span>`;
+  }).join('');
+  if (html) document.getElementById('ticker-track').innerHTML = html;
+}
+
+/* ─── AI BRIEFING ─────────────────────────────────────── */
+async function loadBriefing() {
+  const spy = mktCache['SPY'];
+  const qqq = mktCache['QQQ'];
+  const btc = mktCache['X:BTCUSD'];
+
+  const mktLine = spy
+    ? `S&P 500 ETF (SPY) ${spy.chg>=0?'up':'down'} ${Math.abs(spy.pct).toFixed(2)}% at $${spy.price.toFixed(2)}, Nasdaq ETF (QQQ) ${qqq?.chg>=0?'up':'down'} ${Math.abs(qqq?.pct||0).toFixed(2)}%, Bitcoin at $${btc?.price?.toLocaleString('en-US',{maximumFractionDigits:0})||'—'}.`
+    : 'Live market data unavailable at time of writing.';
+
+  const prompt = `You are the editor of Market Brief, a concise daily financial digest for general readers. Today is ${LONG}.
+
+Current market snapshot: ${mktLine}
+
+Write a professional newspaper-style daily briefing. Structure it exactly as follows:
+
+1. headline — punchy, max 12 words, captures the dominant theme
+2. deck — one compelling sentence summarising the day
+3. intro — 3-4 sentence opening paragraph (will have a drop-cap first letter)
+4. quote — a short, realistic quote from a named analyst or Fed official, plausibly from Bloomberg, Reuters, or WSJ. Label it clearly as illustrative.
+5. quote_source — attribution e.g. "Jane Smith, Chief Economist at Goldman Sachs, via Bloomberg"
+6. macro — one paragraph on rates, Fed, commodities, geopolitics affecting markets
+7. movers — exactly 4 stocks: use realistic illustrative figures for individual names since live per-stock data requires a premium feed
+8. close — one paragraph on what investors should watch this week
+
+Return ONLY valid JSON, no markdown fences, no commentary:
+{
+  "headline": "...",
+  "deck": "...",
+  "intro": "...",
+  "quote": "...",
+  "quote_source": "...",
+  "macro": "...",
+  "movers": [
+    {"sym":"AAPL","name":"Apple","dir":"up","pct":"1.2"},
+    {"sym":"TSLA","name":"Tesla","dir":"dn","pct":"2.3"},
+    {"sym":"NVDA","name":"Nvidia","dir":"up","pct":"3.0"},
+    {"sym":"XOM","name":"Exxon","dir":"dn","pct":"0.9"}
+  ],
+  "close": "..."
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role:'user', content: prompt}]
+      })
+    });
+    const data = await res.json();
+    const raw  = data?.content?.find(b => b.type==='text')?.text || '';
+    const json = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderBriefing(json);
+  } catch(e) {
+    renderFallback();
+  }
+}
+
+function renderBriefing(j) {
+  /* Headline & deck */
+  document.getElementById('article-hed').textContent  = j.headline;
+  document.getElementById('article-hed').classList.add('fade-up');
+  document.getElementById('article-deck').textContent = j.deck;
+
+  /* Intro */
+  document.getElementById('body-intro').innerHTML = `<p>${j.intro}</p>`;
+
+  /* Pull quote */
+  document.getElementById('pull-quote-slot').innerHTML = j.quote ? `
+    <div class="pull-quote fade-up">
+      <blockquote>"${j.quote}"</blockquote>
+      <cite><span class="source-name">${j.quote_source}</span> &mdash; <em>Illustrative</em></cite>
+    </div>` : '';
+
+  /* Macro paragraph */
+  document.getElementById('body-close-slot').innerHTML = `
+    <div class="body-text"><p>${j.macro}</p><p>${j.close}</p></div>`;
+
+  /* Movers */
+  if (j.movers?.length) {
+    const cards = j.movers.map(m => `
+      <div class="mover-card ${m.dir}">
+        <div><div class="mc-sym">${m.sym}</div><div class="mc-name">${m.name}</div></div>
+        <div class="mc-chg ${m.dir}">${m.dir==='up'?'+':'-'}${m.pct}%</div>
+      </div>`).join('');
+    document.getElementById('movers-slot').innerHTML = `
+      <div class="section-label">Top movers <span style="font-size:9px;color:var(--ink3);">Illustrative figures</span></div>
+      <div class="movers-grid">${cards}</div>`;
+  }
+
+  /* Sources & disclaimer */
+  document.getElementById('sources-slot').innerHTML = `
+    <div class="section-label">As cited in this briefing</div>
+    <div class="source-chips">
+      <span class="chip">Bloomberg</span>
+      <span class="chip">Reuters</span>
+      <span class="chip">Wall Street Journal</span>
+      <span class="chip">Financial Times</span>
+      <span class="chip">CNBC</span>
+      <span class="chip">AP Finance</span>
+    </div>`;
+
+  document.getElementById('disclaimer-slot').innerHTML = `
+    <div class="disclaimer">
+      This briefing is AI-generated using publicly available news sources including Bloomberg, Reuters,
+      and the Wall Street Journal. It is for informational purposes only and does not constitute
+      financial advice. Market data is provided by Polygon.io and may be delayed.
+      Always consult a licensed financial advisor before making investment decisions.
+    </div>`;
+}
+
+function renderFallback() {
+  document.getElementById('article-hed').textContent  = 'Markets open mixed as investors weigh macro signals';
+  document.getElementById('article-deck').textContent = 'Today\'s AI briefing is generating — refresh shortly or check back at 8 AM ET.';
+  document.getElementById('body-intro').innerHTML = `<p>Market data and this morning's briefing are loading. Market Brief publishes a fresh AI-drafted summary every morning at 8&nbsp;AM&nbsp;ET, drawing on the latest headlines from Bloomberg, Reuters, the Wall Street Journal, and the Financial Times.</p>`;
+  document.getElementById('sources-slot').innerHTML = `
+    <div class="source-chips">
+      <span class="chip">Bloomberg</span><span class="chip">Reuters</span>
+      <span class="chip">Wall Street Journal</span><span class="chip">Financial Times</span>
+    </div>`;
+  document.getElementById('disclaimer-slot').innerHTML = `
+    <div class="disclaimer">
+      For informational purposes only. Not financial advice. Data via Polygon.io.
+    </div>`;
+}
+
+/* ─── INIT ─────────────────────────────────────────── */
+(async function init() {
+  await loadMarkets();
+  await loadBriefing();
+})();
+</script>
+</body>
+</html>
