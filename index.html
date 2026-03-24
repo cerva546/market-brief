@@ -2,7 +2,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Mkt Brief — AI-drafted daily market intelligence. Published every morning at 8 AM ET.">
+<meta name="description" content="Mkt Brief — Daily market intelligence. Published every morning at 8 AM ET.">
 <title>Mkt Brief — Daily Market Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link href="./Market Brief_files/css2" rel="stylesheet">
@@ -571,7 +571,7 @@ footer a:hover{color:#fff;}
       <a href="#" class="logo" onclick="switchSection(&#39;brief&#39;);return false;">Mkt<span class="logo-dot">.</span>Brief</a>
       <div class="masthead-meta">
         <div id="issue-date">MONDAY, MARCH 23, 2026</div>
-        <div>AI-drafted · Published 8 AM ET daily</div>
+        <div>Published 8 AM ET daily</div>
         <div>Sources: Bloomberg · Reuters · WSJ · Financial Times</div>
       </div>
     </div>
@@ -593,7 +593,6 @@ footer a:hover{color:#fff;}
       <h1 class="article-hed fade-up" id="article-hed">Bitcoin Surges Past $70,000 as Risk Appetite Returns Monday</h1>
       <div class="article-deck" id="article-deck">Crypto markets lead a cautious risk-on open as Bitcoin climbs nearly 4% to reclaim the $70,000 level.</div>
       <div class="byline" id="byline">
-        <span class="badge">AI DRAFT</span>
         <span id="byline-date">Mon, March 23, 2026</span>
         <span>Sources: Bloomberg, Reuters, WSJ</span>
       </div>
@@ -617,7 +616,7 @@ footer a:hover{color:#fff;}
     <div class="source-chips"><span class="chip">Live Market Data</span></div></div>
       <div id="disclaimer-slot">
     <div class="disclaimer">
-      AI-generated briefing based on real news headlines via NewsAPI.org and live market data.
+      Briefing generated using real news headlines and live market data.
       For informational purposes only — not financial advice.
       Always consult a licensed advisor before making investment decisions.
     </div></div>
@@ -627,14 +626,13 @@ footer a:hover{color:#fff;}
       <hr class="sidebar-rule">
       <div class="sidebar-label">
         Live Markets
-        <button class="refresh-btn" onclick="refreshMarkets()">↻ Refresh</button>
       </div>
       <div id="market-table-sidebar"><div class="mkt-row"><div><div class="mkt-n">S&amp;P 500</div><div class="mkt-s">US Large Cap</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Nasdaq 100</div><div class="mkt-s">Tech Index</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Dow Jones</div><div class="mkt-s">Blue Chip</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Gold</div><div class="mkt-s">ETF</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Crude Oil</div><div class="mkt-s">WTI ETF</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Bitcoin</div><div class="mkt-s">Crypto</div></div><div><div class="mkt-p">70,699</div><div class="mkt-c"><span class="up">+2882.68 (+4.08%)</span></div></div></div></div>
       <div class="data-note" id="data-note-sidebar">Polygon.io (prev close) · CoinGecko (BTC live)</div>
 
       <div class="ai-box">
         <div class="ai-box-head"><span class="pulse-dot"></span>About this briefing</div>
-        <div class="ai-box-body">Each morning at 8&nbsp;AM&nbsp;ET, our AI analyzes the latest market data and headlines from Bloomberg, Reuters, WSJ, and the Financial Times to draft this briefing. The same edition is served to all readers that day.</div>
+        <div class="ai-box-body">Each morning at 8&nbsp;AM&nbsp;ET, we analyze the latest market data and headlines from Bloomberg, Reuters, WSJ, and the Financial Times. The same edition is served to all readers that day.</div>
       </div>
 
       <hr class="sidebar-rule" style="margin-top:24px;">
@@ -654,7 +652,7 @@ footer a:hover{color:#fff;}
     <div class="kicker" style="margin-bottom:20px;">Live Market Data</div>
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
       <h2 style="font-family:var(--fhead);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.02em;">Markets Overview</h2>
-      <button class="refresh-btn" style="font-size:11px;padding:6px 14px;" onclick="refreshMarkets()">↻ Refresh All</button>
+      
     </div>
     <div class="markets-grid" id="markets-grid">
       <div class="mkt-card"><div class="mkt-card-title">US Equities</div><div id="mkt-us"><div class="mkt-row"><div><div class="mkt-n">S&amp;P 500</div><div class="mkt-s">SPY</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Nasdaq 100</div><div class="mkt-s">QQQ</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Dow Jones</div><div class="mkt-s">DIA</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Russell 2000</div><div class="mkt-s">IWM</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div></div></div>
@@ -685,11 +683,11 @@ footer a:hover{color:#fff;}
     <div class="about-wrap">
       <div class="kicker" style="margin-bottom:20px;">About This Publication</div>
       <h2>What is Mkt Brief?</h2>
-      <p>Mkt Brief is a daily AI-drafted financial digest designed to give general readers a clear, concise picture of what moved markets each morning. Each edition is generated fresh at 8&nbsp;AM&nbsp;Eastern Time and served identically to all readers that day.</p>
-      <p>The briefing is written by Claude (Anthropic's AI), drawing on real-time market data and the latest financial headlines. It covers equity indices, rates, commodities, major movers, and what to watch in the week ahead.</p>
+      <p>Mkt Brief is a daily financial digest designed to give general readers a clear, concise picture of what moved markets each morning. Each edition is generated fresh at 8&nbsp;AM&nbsp;Eastern Time and served identically to all readers that day.</p>
+      <p>Each briefing draws on real-time market data and the latest financial headlines, covering equity indices, rates, commodities, major movers, and what to watch in the week ahead.</p>
 
       <h3>How it works</h3>
-      <p>Each morning at 8 AM ET, the page fetches real business headlines from NewsAPI.org alongside live market prices from Yahoo Finance and CoinGecko. These are passed to Claude, which drafts a newspaper-style briefing grounded entirely in the day's actual news — no fabricated quotes, no invented events. The result is cached locally so every reader sees the same edition instantly on return visits.</p>
+      <p>Each morning at 8 AM ET, the page fetches real business headlines alongside live market prices. A briefing is drafted grounded in the day's actual news — no fabricated quotes, no invented events. Every reader sees the same edition instantly.</p>
 
       <h3>Data sources</h3>
       <ul>
@@ -700,11 +698,11 @@ footer a:hover{color:#fff;}
       </ul>
 
       <h3>Disclaimer</h3>
-      <p>Market Brief is for informational purposes only and does not constitute financial advice. All content is AI-generated and may contain errors or omissions. Always consult a licensed financial advisor before making investment decisions. Market data may be delayed.</p>
+      <p>Market Brief is for informational purposes only and does not constitute financial advice. Content is generated automatically and may contain errors or omissions. Always consult a licensed financial advisor before making investment decisions. Market data may be delayed.</p>
 
       <h3>Technology</h3>
       <ul>
-        <li><strong>AI model</strong> — Claude Sonnet 4.6 (Anthropic)</li>
+        
         <li><strong>News data</strong> — NewsAPI.org (real-time headlines)</li>
         <li><strong>Market data</strong> — Yahoo Finance API, CoinGecko API</li>
         <li><strong>Brief caching</strong> — Browser localStorage (per device)</li>
@@ -727,9 +725,9 @@ footer a:hover{color:#fff;}
 <!-- FOOTER -->
 <footer>
   <strong>Mkt Brief</strong><br>
-  AI-drafted daily market intelligence · Published every morning at 8:00 AM ET<br>
+  Daily market intelligence · Published every morning at 8:00 AM ET<br>
   Market data: Yahoo Finance · CoinGecko ·
-  AI: <a href="https://anthropic.com/" target="_blank">Anthropic Claude</a><br>
+  
   Not financial advice · For informational purposes only<br>
   © <span id="yr">2026</span> Market Brief
 </footer>
@@ -806,43 +804,41 @@ let mktCache = {};
 /* Stock quotes via /api/quotes — key stays secure in Vercel */
 async function polygonQuote(sym) {
   try {
-    const r = await fetch(`/api/quotes?symbols=${encodeURIComponent(sym)}`, {signal:AbortSignal.timeout(10000)});
+    const r = await fetch(`/api/quotes?symbols=${encodeURIComponent(sym)}`,{signal:AbortSignal.timeout(10000)});
     if (!r.ok) return null;
     const d = await r.json();
     const q = d?.results?.[0];
     if (!q || q.error) return null;
-    return {sym:q.sym, price:q.price, chg:q.chg, pct:q.pct};
+    return {sym:q.sym,price:q.price,chg:q.chg,pct:q.pct};
   } catch { return null; }
 }
-
 async function batchQuotes(syms) {
   try {
-    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`, {signal:AbortSignal.timeout(12000)});
+    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`,{signal:AbortSignal.timeout(12000)});
     if (!r.ok) return {};
     const d = await r.json();
     const out = {};
-    (d?.results||[]).forEach(q => { if (!q.error) out[q.sym] = q; });
+    (d?.results||[]).forEach(q=>{ if(!q.error) out[q.sym]=q; });
     return out;
   } catch { return {}; }
 }
 
-/* CoinGecko: all 6 cryptos in one call */
-const CRYPTO_IDS = {bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',dogecoin:'DOGE'};
-const CRYPTO_NAMES = {BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',XRP:'XRP',BNB:'BNB',DOGE:'Dogecoin'};
-async function btcQuote() { return (await fetchAllCrypto())['BTC']||null; }
-async function fetchAllCrypto() {
-  try {
-    const ids = Object.keys(CRYPTO_IDS).join(',');
-    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`,{signal:AbortSignal.timeout(8000)});
-    if (!r.ok) return {};
-    const d = await r.json();
-    const out = {};
+/* CoinGecko: all 6 cryptos */
+const CRYPTO_IDS={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',dogecoin:'DOGE'};
+const CRYPTO_NAMES={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',XRP:'XRP',BNB:'BNB',DOGE:'Dogecoin'};
+async function btcQuote(){return(await fetchAllCrypto())['BTC']||null;}
+async function fetchAllCrypto(){
+  try{
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${Object.keys(CRYPTO_IDS).join(',')}&vs_currencies=usd&include_24hr_change=true`,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)return{};
+    const d=await r.json();
+    const out={};
     Object.entries(CRYPTO_IDS).forEach(([id,sym])=>{
-      const price=d[id]?.usd, pct=d[id]?.usd_24h_change??0;
-      if(price) out[sym]={sym,price,chg:price*(pct/100),pct};
+      const price=d[id]?.usd,pct=d[id]?.usd_24h_change??0;
+      if(price)out[sym]={sym,price,chg:price*(pct/100),pct};
     });
     return out;
-  } catch { return {}; }
+  }catch{return{};}
 }
 
 function fmtPrice(p)  { return p >= 1000 ? p.toLocaleString('en-US',{maximumFractionDigits:2}) : p.toFixed(2); }
@@ -860,62 +856,40 @@ async function loadMarketGroup(defs, isCrypto) {
 }
 
 async function refreshMarkets() {
-  document.getElementById('data-note-sidebar').textContent = 'Refreshing…';
-
-  const allSyms = [...new Set([
-    'SPY','QQQ','DIA','GLD','USO',
-    ...MKT_US.map(m=>m.sym), ...MKT_TECH.map(m=>m.sym),
-    ...MKT_COMMODITIES.map(m=>m.sym), ...MKT_FIXED.map(m=>m.sym),
-    ...TICKER_ALL
-  ])];
-
-  const [stockMap, cryptoMap] = await Promise.all([batchQuotes(allSyms), fetchAllCrypto()]);
-  Object.assign(mktCache, stockMap, cryptoMap);
-
-  const sidebarDefs = [
-    {sym:'SPY',name:'S&P 500',sub:'US Large Cap'},
-    {sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},
-    {sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},
-    {sym:'GLD',name:'Gold',sub:'ETF'},
-    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'},
-  ];
-  let html = sidebarDefs.map(m=>mktRowHtml(m.name,m.sub,mktCache[m.sym])).join('');
-  html += mktRowHtml('Bitcoin','Crypto',mktCache['BTC']);
-  html += mktRowHtml('Ethereum','Crypto',mktCache['ETH']);
-  html += mktRowHtml('Solana','Crypto',mktCache['SOL']);
-  document.getElementById('market-table-sidebar').innerHTML = html;
-
-  const gotAny = Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0;
-  document.getElementById('data-note-sidebar').textContent = gotAny
-    ? 'Finnhub (real-time) · CoinGecko (crypto live 24h)'
-    : 'Data unavailable — markets may be closed';
-
+  const allSyms=[...new Set(['SPY','QQQ','DIA','GLD','USO',...MKT_US.map(m=>m.sym),...MKT_TECH.map(m=>m.sym),...MKT_COMMODITIES.map(m=>m.sym),...MKT_FIXED.map(m=>m.sym),...TICKER_ALL])];
+  const [stockMap,cryptoMap]=await Promise.all([batchQuotes(allSyms),fetchAllCrypto()]);
+  Object.assign(mktCache,stockMap,cryptoMap);
+  const sd=[{sym:'SPY',name:'S&P 500',sub:'US Large Cap'},{sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},{sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},{sym:'GLD',name:'Gold',sub:'ETF'},{sym:'USO',name:'Crude Oil',sub:'WTI ETF'}];
+  let html=sd.map(m=>mktRowHtml(m.name,m.sub,mktCache[m.sym])).join('');
+  html+=mktRowHtml('Bitcoin','Crypto',mktCache['BTC']);
+  html+=mktRowHtml('Ethereum','Crypto',mktCache['ETH']);
+  html+=mktRowHtml('Solana','Crypto',mktCache['SOL']);
+  document.getElementById('market-table-sidebar').innerHTML=html;
+  const gotAny=Object.keys(stockMap).length>0||Object.keys(cryptoMap).length>0;
+  document.getElementById('data-note-sidebar').textContent=gotAny?'Finnhub · CoinGecko · Updates every 30 min':'Data unavailable — markets may be closed';
   await renderMarketsPage();
-  if (gotAny) buildTicker();
+  if(gotAny)buildTicker();
+  setTimeout(refreshMarkets,30*60*1000);
 }
 
 async function renderMarketsPage() {
-  document.getElementById('mkt-us').innerHTML          = MKT_US.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-tech').innerHTML        = MKT_TECH.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-fixed').innerHTML       = MKT_FIXED.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
-  const cryptoEl = document.getElementById('mkt-crypto');
-  if (cryptoEl) cryptoEl.innerHTML = Object.entries(CRYPTO_IDS).map(([id,sym])=>mktRowHtml(CRYPTO_NAMES[sym]||sym,sym,mktCache[sym])).join('');
-  document.getElementById('data-note-markets').textContent = 'Stocks: Finnhub real-time · Crypto: CoinGecko live 24h · May be delayed outside market hours';
+  document.getElementById('mkt-us').innerHTML=MKT_US.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-tech').innerHTML=MKT_TECH.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-commodities').innerHTML=MKT_COMMODITIES.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-fixed').innerHTML=MKT_FIXED.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  const ce=document.getElementById('mkt-crypto');
+  if(ce)ce.innerHTML=Object.entries(CRYPTO_IDS).map(([id,sym])=>mktRowHtml(CRYPTO_NAMES[sym]||sym,sym,mktCache[sym])).join('');
+  document.getElementById('data-note-markets').textContent='Stocks: Finnhub · Crypto: CoinGecko · Updates every 30 min';
 }
 
 async function buildTicker() {
-  const stocks  = TICKER_ALL.map(s=>mktCache[s]).filter(Boolean);
-  const cryptos = Object.values(CRYPTO_IDS).map(sym=>mktCache[sym]).filter(Boolean);
-  const all = [...stocks,...cryptos];
-  if (!all.length) return;
-  const doubled = [...all,...all];
-  const html = doubled.map(r=>{
-    const up=r.chg>=0;
-    const p=r.price>=10000?r.price.toLocaleString('en-US',{maximumFractionDigits:0}):r.price>=1?r.price.toFixed(2):r.price.toFixed(4);
+  const all=[...TICKER_ALL.map(s=>mktCache[s]),...Object.values(CRYPTO_IDS).map(sym=>mktCache[sym])].filter(Boolean);
+  if(!all.length)return;
+  const html=[...all,...all].map(r=>{
+    const up=r.chg>=0,p=r.price>=10000?r.price.toLocaleString('en-US',{maximumFractionDigits:0}):r.price>=1?r.price.toFixed(2):r.price.toFixed(4);
     return `<span class="t-item"><span class="sym">${r.sym}</span>${p} <span class="${up?'t-up':'t-dn'}">${up?'+':''}${r.pct.toFixed(2)}%</span></span>`;
   }).join('');
-  document.getElementById('ticker-track').innerHTML = html;
+  document.getElementById('ticker-track').innerHTML=html;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1007,15 +981,8 @@ Return ONLY valid JSON with no markdown or commentary:
   "sources": ["list", "of", "source", "names", "from", "the", "headlines", "used"]
 }`;
 
-  const res = await fetch('/api/brief', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({prompt})
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
-    throw new Error(err.error || 'Brief API error ' + res.status);
-  }
+  const res=await fetch('/api/brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'Brief API error '+res.status);}
   return await res.json();
 }
 
@@ -1143,62 +1110,45 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); }
    INIT — 8 AM ET daily brief logic
 ═══════════════════════════════════════════════════════ */
 async function init() {
-  /* Start markets immediately */
   refreshMarkets();
-
-  const todayKey = etDateKey();
-  const cached   = getCachedBrief(todayKey);
-
-  /* Cached brief → show instantly, done */
-  if (cached) {
-    renderBrief(cached);
+  const todayKey=etDateKey();
+  const localCached=getCachedBrief(todayKey);
+  if(localCached){renderBrief(localCached);renderPastIssuesSidebar(getArchive());showToast("Today's brief loaded");return;}
+  const hour=etHour();
+  if(hour<8){
+    const archive=getArchive();
+    if(archive.length){renderBrief(archive[0]);document.getElementById('article-hed').textContent=archive[0].headline+' (Previous Edition)';showToast("Today's brief publishes at 8 AM ET");}
+    else{document.getElementById('article-hed').textContent="Today's brief publishes at 8 AM ET";document.getElementById('article-deck').textContent='Check back after 8:00 AM Eastern Time.';document.getElementById('body-intro').innerHTML='<p>Mkt Brief publishes a fresh briefing every morning at 8 AM ET.</p>';}
     renderPastIssuesSidebar(getArchive());
-    showToast("Today's brief loaded");
+    const etNow=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+    const et8am=new Date(etNow);et8am.setHours(8,0,0,0);
+    const ms=et8am-etNow;if(ms>0)setTimeout(()=>init(),ms+5000);
     return;
   }
-
-  const hour = etHour();
-
-  /* Before 8 AM → show yesterday's brief if available */
-  if (hour < 8) {
-    const archive = getArchive();
-    if (archive.length) {
-      renderBrief(archive[0]);
-      document.getElementById('article-hed').textContent = archive[0].headline + ' (Previous Edition)';
-      showToast("Today's brief publishes at 8 AM ET");
-    } else {
-      document.getElementById('article-hed').textContent  = "Today's brief publishes at 8 AM ET";
-      document.getElementById('article-deck').textContent = 'Check back after 8:00 AM Eastern Time.';
-      document.getElementById('body-intro').innerHTML     = '<p>Mkt Brief publishes a fresh AI-drafted briefing every morning at 8 AM ET.</p>';
+  /* Check shared server cache first — same brief for all visitors */
+  try{
+    const sr=await fetch('/api/brief',{method:'GET'});
+    if(sr.status===200){
+      const sb=await sr.json();
+      if(sb?.headline){setCachedBrief(todayKey,sb);renderBrief(sb);renderPastIssuesSidebar(getArchive());showToast("Today's brief loaded");return;}
     }
-    renderPastIssuesSidebar(getArchive());
-    const etNow = new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
-    const et8am = new Date(etNow); et8am.setHours(8,0,0,0);
-    const ms = et8am - etNow;
-    if (ms > 0) setTimeout(()=>init(), ms + 5000);
-    return;
-  }
-
-  /* Past 8 AM, no cache → generate once */
-  let briefRendered = false;
-  try {
-    const brief = await generateBrief();
-    if (!brief || !brief.headline) throw new Error('Empty response');
-    setCachedBrief(todayKey, brief);
-    briefRendered = true;
-    renderBrief(brief);
-    renderPastIssuesSidebar(getArchive());
-    showToast("Today's brief is ready");
-  } catch(err) {
-    console.error('Brief generation failed:', err);
-    if (!briefRendered) {
-      document.getElementById('article-hed').textContent  = 'Brief generating — please refresh';
-      document.getElementById('article-deck').textContent = 'Refresh the page in a moment.';
-      document.getElementById('body-intro').innerHTML     = '<p>The briefing is being prepared. Please refresh.</p>';
+  }catch{}
+  /* No shared cache — generate once */
+  let briefRendered=false;
+  try{
+    const brief=await generateBrief();
+    if(!brief||!brief.headline)throw new Error('Empty response');
+    setCachedBrief(todayKey,brief);briefRendered=true;
+    renderBrief(brief);renderPastIssuesSidebar(getArchive());showToast("Today's brief is ready");
+  }catch(err){
+    console.error('Brief generation failed:',err);
+    if(!briefRendered){
+      document.getElementById('article-hed').textContent='Brief generating — please refresh';
+      document.getElementById('article-deck').textContent='Refresh the page in a moment.';
+      document.getElementById('body-intro').innerHTML='<p>The briefing is being prepared. Please refresh.</p>';
     }
   }
 }
-
 init();
 </script>
 
