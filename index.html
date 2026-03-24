@@ -747,8 +747,8 @@ footer a:hover{color:#fff;}
 ═══════════════════════════════════════════════════════ */
 const MKT_US          = [{sym:'SPY',name:'S&P 500',sub:'ETF'},{sym:'QQQ',name:'Nasdaq 100',sub:'ETF'},{sym:'DIA',name:'Dow Jones',sub:'ETF'},{sym:'IWM',name:'Russell 2000',sub:'Small Cap ETF'}];
 const MKT_TECH        = [{sym:'AAPL',name:'Apple',sub:'AAPL'},{sym:'NVDA',name:'Nvidia',sub:'NVDA'},{sym:'MSFT',name:'Microsoft',sub:'MSFT'},{sym:'META',name:'Meta',sub:'META'},{sym:'AMZN',name:'Amazon',sub:'AMZN'},{sym:'TSLA',name:'Tesla',sub:'TSLA'}];
-const MKT_COMMODITIES = [{sym:'GLD',name:'Gold',sub:'ETF'},{sym:'USO',name:'Crude Oil',sub:'WTI ETF'},{sym:'SLV',name:'Silver',sub:'ETF'}];
-const MKT_FIXED       = [{sym:'TLT',name:'20yr Treasury',sub:'Bond ETF'},{sym:'HYG',name:'High Yield',sub:'Bond ETF'},{sym:'UUP',name:'US Dollar',sub:'DXY ETF'}];
+const MKT_COMM       = [{sym:'GLD',name:'Gold',sub:'ETF'},{sym:'USO',name:'Crude Oil',sub:'WTI ETF'},{sym:'SLV',name:'Silver',sub:'ETF'}];
+const MKT_FI         = [{sym:'TLT',name:'20yr Treasury',sub:'Bond ETF'},{sym:'HYG',name:'High Yield',sub:'Bond ETF'},{sym:'UUP',name:'US Dollar',sub:'DXY ETF'}];
 const TICKER_ALL      = ['SPY','QQQ','DIA','AAPL','NVDA','TSLA','AMZN','META','MSFT','GLD'];
 
 /* ═══════════════════════════════════════════════════════
@@ -876,7 +876,7 @@ async function refreshMarkets() {
   const allStockSyms = [...new Set([
     'SPY','QQQ','DIA','GLD','USO',
     ...MKT_US.map(m=>m.sym), ...MKT_TECH.map(m=>m.sym),
-    ...MKT_COMMODITIES.map(m=>m.sym), ...MKT_FIXED.map(m=>m.sym),
+    ...MKT_COMM.map(m=>m.sym), ...MKT_FI.map(m=>m.sym),
     ...TICKER_ALL
   ])];
 
@@ -910,8 +910,8 @@ async function refreshMarkets() {
 async function renderMarketsPage() {
   document.getElementById('mkt-us').innerHTML          = MKT_US.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
   document.getElementById('mkt-tech').innerHTML        = MKT_TECH.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-fixed').innerHTML       = MKT_FIXED.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-commodities').innerHTML = MKT_COMM.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
+  document.getElementById('mkt-fixed').innerHTML       = MKT_FI.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
   const cryptoEntries = Object.entries(CRYPTO_IDS);
   document.getElementById('mkt-crypto').innerHTML      = cryptoEntries.map(([id,sym])=>
     mktRowHtml(CRYPTO_NAMES[sym]||sym, sym, mktCache[sym])
