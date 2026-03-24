@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  /* CORS — allow your site to call this */
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -8,31 +7,33 @@ export default async function handler(req, res) {
 
   const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
   const NEWS_API_KEY  = process.env.NEWS_API_KEY;
-  const FINNHUB_KEY   = process.env.FINNHUB_KEY;
 
   if (!ANTHROPIC_KEY) return res.status(500).json({error:'ANTHROPIC_KEY not set in Vercel env vars'});
 
   const { prompt } = req.body || {};
   if (!prompt) return res.status(400).json({error:'Missing prompt'});
 
-  /* Fetch news headlines server-side (NewsAPI blocks browsers) */
+  /* Fetch news with a strict 5s timeout so it never blocks the brief */
   let headlines = '(News headlines unavailable)';
   if (NEWS_API_KEY) {
     try {
-      const [topRes, finRes] = await Promise.all([
-        fetch(`https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=15&apiKey=${NEWS_API_KEY}`),
-        fetch(`https://newsapi.org/v2/everything?q=stock+market+federal+reserve+economy&language=en&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`)
-      ]);
-      const topData = topRes.ok ? await topRes.json() : {articles:[]};
-      const finData = finRes.ok ? await finRes.json() : {articles:[]};
-      const all = [...(topData.articles||[]), ...(finData.articles||[])];
-      const seen = new Set();
-      headlines = all
-        .filter(a => { if (!a.title || seen.has(a.title)) return false; seen.add(a.title); return true; })
-        .slice(0, 20)
-        .map(a => `• ${a.title}${a.description ? ' — ' + a.description.slice(0,120) : ''} [${a.source?.name||'Unknown'}, ${a.publishedAt?.slice(0,10)}]`)
-        .join('\n');
-    } catch(e) { headlines = '(News fetch failed)'; }
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 5000);
+      const r = await fetch(
+        `https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=20&apiKey=${NEWS_API_KEY}`,
+        {signal: ctrl.signal}
+      );
+      clearTimeout(timer);
+      if (r.ok) {
+        const d = await r.json();
+        const articles = d.articles || [];
+        headlines = articles.slice(0, 15).map(a =>
+          `• ${a.title}${a.description ? ' — ' + a.description.slice(0,100) : ''} [${a.source?.name||'Unknown'}]`
+        ).join('\n');
+      }
+    } catch(e) {
+      headlines = '(News fetch timed out — brief based on market data only)';
+    }
   }
 
   /* Call Anthropic */
@@ -46,15 +47,15 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1400,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1200,
         messages: [{ role: 'user', content: fullPrompt }]
       })
     });
 
     if (!anthropicRes.ok) {
       const err = await anthropicRes.text();
-      return res.status(502).json({error:'Anthropic API error', detail: err});
+      return res.status(502).json({error:'Anthropic API error', detail: err.slice(0,200)});
     }
 
     const data = await anthropicRes.json();
@@ -63,6 +64,6 @@ export default async function handler(req, res) {
     const json = JSON.parse(clean);
     return res.status(200).json(json);
   } catch(e) {
-    return res.status(500).json({error:'Brief generation failed', detail: e.message});
+    return res.status(500).json({error: 'Brief generation failed', detail: e.message});
   }
 }
