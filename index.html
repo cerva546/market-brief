@@ -1141,57 +1141,57 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); }
    INIT — 8 AM ET daily brief logic
 ═══════════════════════════════════════════════════════ */
 async function init() {
-  /* Start market data (non-blocking) */
+  /* Start market data immediately (non-blocking) */
   refreshMarkets();
 
   const todayKey = etDateKey();
   const cached   = getCachedBrief(todayKey);
 
   if (cached) {
-    /* Instant render from cache */
     renderBrief(cached);
     renderPastIssuesSidebar(getArchive());
-    showToast("Today's brief loaded from cache");
+    showToast("Today's brief loaded");
     return;
   }
 
-  /* Not cached yet — should we generate? */
   const hour = etHour();
   if (hour < 8) {
-    /* Before 8 AM — show last brief if available, with a note */
     const archive = getArchive();
     if (archive.length) {
       renderBrief(archive[0]);
       document.getElementById('article-hed').textContent = archive[0].headline + ' (Previous Edition)';
       showToast("Today's brief publishes at 8 AM ET");
     } else {
-      document.getElementById('article-hed').textContent  = 'Today\'s brief publishes at 8 AM ET';
-      document.getElementById('article-deck').textContent = 'Check back after 8:00 AM Eastern Time for your daily market briefing.';
-      document.getElementById('body-intro').innerHTML     = '<p>Market Brief generates a fresh AI-drafted summary every morning at 8 AM Eastern Time. This page will automatically show the new brief when it is ready.</p>';
+      document.getElementById('article-hed').textContent  = "Today's brief publishes at 8 AM ET";
+      document.getElementById('article-deck').textContent = 'Check back after 8:00 AM Eastern Time.';
+      document.getElementById('body-intro').innerHTML     = '<p>Market Brief generates a fresh AI-drafted briefing every morning at 8 AM ET.</p>';
     }
     renderPastIssuesSidebar(getArchive());
-
-    /* Schedule a check at 8 AM */
     const etNow = new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
     const et8am = new Date(etNow); et8am.setHours(8,0,0,0);
-    const msUntil8 = et8am - etNow;
-    if (msUntil8 > 0) setTimeout(() => init(), msUntil8 + 5000);
+    const ms = et8am - etNow;
+    if (ms > 0) setTimeout(()=>init(), ms + 5000);
     return;
   }
 
-  /* Past 8 AM — generate and cache */
+  /* Past 8 AM — generate fresh brief */
+  let briefRendered = false;
   try {
-    /* Wait briefly for market data to arrive */
-    await new Promise(r => setTimeout(r, 2000));
     const brief = await generateBrief();
+    if (!brief || !brief.headline) throw new Error('Invalid brief response');
     setCachedBrief(todayKey, brief);
+    briefRendered = true;
     renderBrief(brief);
     renderPastIssuesSidebar(getArchive());
+    showToast("Today's brief is ready");
   } catch(err) {
     console.error('Brief generation failed:', err);
-    document.getElementById('article-hed').textContent  = 'Markets open — brief unavailable';
-    document.getElementById('article-deck').textContent = 'There was a problem generating today\'s briefing. Please refresh the page.';
-    document.getElementById('body-intro').innerHTML     = '<p>We encountered an issue generating today\'s AI briefing. This can happen if the API key is invalid or if there is a network error. Please refresh to try again.</p>';
+    /* Only show error if we never successfully rendered */
+    if (!briefRendered) {
+      document.getElementById('article-hed').textContent  = 'Brief generating — please wait';
+      document.getElementById('article-deck').textContent = 'Refresh the page in a moment to see today's briefing.';
+      document.getElementById('body-intro').innerHTML     = '<p>The AI briefing is being generated. This can take up to 30 seconds on first load. Please refresh the page.</p>';
+    }
   }
 }
 
