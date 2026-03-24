@@ -861,13 +861,69 @@ function fmtChange(r) {
   const up = r.chg >= 0;
   return `<span class="${up?'up':'dn'}">${up?'+':''}${r.chg.toFixed(2)} (${up?'+':''}${r.pct.toFixed(2)}%)</span>`;
 }
-function mktRowHtml(name, sub, r) {
-  if (!r) return `<div class="mkt-row"><div><div class="mkt-n">${name}</div><div class="mkt-s">${sub}</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div>`;
-  return `<div class="mkt-row"><div><div class="mkt-n">${name}</div><div class="mkt-s">${sub}</div></div><div><div class="mkt-p">${fmtPrice(r.price)}</div><div class="mkt-c">${fmtChange(r)}</div></div></div>`;
+function mktRowHtml(name, sub, r, isLoading = false) {
+  if (!r) {
+    return `<div class="mkt-row">
+      <div>
+        <div class="mkt-n">${name}</div>
+        <div class="mkt-s">${sub}</div>
+      </div>
+      <div>
+        <div class="mkt-p flat">—</div>
+        <div class="mkt-c flat" style="font-size:10px;">${isLoading ? 'loading...' : 'unavailable'}</div>
+      </div>
+    </div>`;
+  }
+
+  return `<div class="mkt-row">
+    <div>
+      <div class="mkt-n">${name}</div>
+      <div class="mkt-s">${sub}</div>
+    </div>
+    <div>
+      <div class="mkt-p">${fmtPrice(r.price)}</div>
+      <div class="mkt-c">${fmtChange(r)}</div>
+    </div>
+  </div>`;
 }
 
 async function loadMarketGroup(defs, isCrypto) {
   return Promise.all(defs.map(m => isCrypto ? btcQuote() : polygonQuote(m.sym)));
+}
+
+function renderMarketsLoading() {
+  const sidebarDefs = [
+    {sym:'SPY',name:'S&P 500',sub:'ETF'},
+    {sym:'QQQ',name:'Nasdaq 100',sub:'ETF'},
+    {sym:'DIA',name:'Dow Jones',sub:'ETF'},
+    {sym:'GLD',name:'Gold',sub:'ETF'},
+    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'},
+  ];
+
+  let html = sidebarDefs.map(m => mktRowHtml(m.name, m.sub, mktCache[m.sym], !mktCache[m.sym])).join('');
+  html += mktRowHtml('Bitcoin', 'BTC 24h', mktCache['BTC'], !mktCache['BTC']);
+  html += mktRowHtml('Ethereum', 'ETH 24h', mktCache['ETH'], !mktCache['ETH']);
+  html += mktRowHtml('Solana', 'SOL 24h', mktCache['SOL'], !mktCache['SOL']);
+  document.getElementById('market-table-sidebar').innerHTML = html;
+
+  document.getElementById('mkt-us').innerHTML =
+    MKT_US.map(m => mktRowHtml(m.name, m.sym, mktCache[m.sym], !mktCache[m.sym])).join('');
+
+  document.getElementById('mkt-tech').innerHTML =
+    MKT_TECH.map(m => mktRowHtml(m.name, m.sym, mktCache[m.sym], !mktCache[m.sym])).join('');
+
+  document.getElementById('mkt-commodities').innerHTML =
+    MKT_COMMODITIES.map(m => mktRowHtml(m.name, m.sub || m.sym, mktCache[m.sym], !mktCache[m.sym])).join('');
+
+  document.getElementById('mkt-fixed').innerHTML =
+    MKT_FIXED.map(m => mktRowHtml(m.name, m.sub || m.sym, mktCache[m.sym], !mktCache[m.sym])).join('');
+
+  const cryptoEntries = Object.entries(CRYPTO_IDS);
+  document.getElementById('mkt-crypto').innerHTML =
+    cryptoEntries.map(([id, sym]) => mktRowHtml(CRYPTO_NAMES[sym] || sym, sym, mktCache[sym], !mktCache[sym])).join('');
+
+  document.getElementById('data-note-sidebar').textContent = 'Loading live market data...';
+  document.getElementById('data-note-markets').textContent = 'Loading live market data...';
 }
 
 async function refreshMarkets() {
@@ -1164,7 +1220,8 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); }
    INIT — 8 AM ET daily brief logic
 ═══════════════════════════════════════════════════════ */
 async function init() {
-  /* Start market data (non-blocking) */
+  /* Show loading state first, then fetch live data */
+  renderMarketsLoading();
   refreshMarkets();
 
   const todayKey = etDateKey();
