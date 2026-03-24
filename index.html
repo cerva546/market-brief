@@ -963,7 +963,7 @@ async function generateBrief() {
   const uso = mktCache['USO'];
 
   const fmt = (r, label) => r
-    ? `${label} ${r.chg>=0?'▲':'▼'} ${Math.abs(r.pct).toFixed(2)}% at ${r.price>=1000?r.price.toLocaleString('en-US',{maximumFractionDigits:2}):r.price.toFixed(2)}`
+    ? `${label} ${r.chg>=0?'▲':'▼'} ${Math.abs(r.pct).toFixed(2)}% at ${r.price>=1000 ? r.price.toLocaleString('en-US',{maximumFractionDigits:2}) : r.price.toFixed(2)}`
     : null;
 
   const mktLines = [
@@ -974,46 +974,46 @@ async function generateBrief() {
     fmt(mktCache['ETH'], 'Ethereum'),
     fmt(mktCache['SOL'], 'Solana'),
     fmt(gld, 'Gold (GLD ETF)'),
-    fmt(uso, 'Crude Oil (USO ETF)'),
+    fmt(uso, 'Crude Oil (USO ETF)')
   ].filter(Boolean).join('\n') || 'Live market data unavailable.';
 
-  /* Fetch real news headlines */
-  const headlines = await fetchNewsHeadlines();
+  const prompt = `You are the editor of Market Brief, a short daily market summary. Today is ${LONG}.
 
-  const prompt = `You are the editor of Market Brief, a concise daily financial digest. Today is ${LONG}.
-
-LIVE MARKET DATA (previous close vs open):
+LIVE MARKET DATA:
 ${mktLines}
 
-Write a professional newspaper-style daily market briefing grounded in the headlines above. Do NOT include any quotes from named individuals — do not fabricate or attribute statements to real people. Base all analysis strictly on the provided headlines and market data.
+Write in clear, simple language for an average reader. Keep it smart, calm, and easy to follow. Use short sentences where possible. Avoid jargon when you can. Explain what happened in the market in a direct way.
 
-Return ONLY valid JSON with no markdown or commentary:
+Use the real market data above and the news headlines that will be added server-side. Do not make up facts, events, or quotes. Do not include quotes from named people.
+
+Return ONLY valid JSON with no markdown or extra text:
 {
-  "headline": "punchy headline max 12 words capturing the dominant story",
-  "deck": "one compelling sentence summarising the day's market picture",
-  "intro": "3-4 sentence opening paragraph covering the main market moves and top story",
-  "macro": "one paragraph covering rates, Fed policy, commodities, and any geopolitical factors visible in the headlines",
-  "events": "one paragraph summarising key economic events or corporate news from today's headlines",
+  "headline": "short headline, max 12 words",
+  "deck": "one clear sentence summing up the market mood",
+  "intro": "3-4 sentence opening paragraph on the main market story",
+  "macro": "one paragraph on rates, Fed, commodities, or other big-picture themes",
+  "events": "one paragraph on major company news or economic headlines",
   "movers": [
     {"sym":"AAPL","name":"Apple","dir":"up","pct":"1.2"},
     {"sym":"TSLA","name":"Tesla","dir":"dn","pct":"2.3"},
     {"sym":"NVDA","name":"Nvidia","dir":"up","pct":"3.0"},
     {"sym":"XOM","name":"Exxon","dir":"dn","pct":"0.9"}
   ],
-  "close": "one paragraph on key data, earnings, or events investors should watch this week",
-  "sources": ["list", "of", "source", "names", "from", "the", "headlines", "used"]
+  "close": "one short paragraph on what investors should watch next",
+  "sources": ["list", "of", "source", "names", "used"]
 }`;
 
-  /* Call secure serverless function — keys stay in Vercel env vars */
   const res = await fetch('/api/brief', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({prompt})
+    body: JSON.stringify({ prompt })
   });
+
   if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
+    const err = await res.json().catch(() => ({}));
     throw new Error(err.error || 'Brief API error ' + res.status);
   }
+
   return await res.json();
 }
 
