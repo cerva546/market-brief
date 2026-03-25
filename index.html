@@ -428,6 +428,18 @@ async function refreshMarkets() {
   if (gotAny) buildTicker();
 
   setTimeout(refreshMarkets, 30 * 60 * 1000);
+
+  const now = new Date();
+const stamp = now.toLocaleTimeString('en-US', {
+  hour: 'numeric',
+  minute: '2-digit'
+});
+
+document.getElementById('data-note-sidebar').textContent =
+  `Finnhub · CoinGecko · Updated ${stamp} · Refreshes every 30 min`;
+
+document.getElementById('data-note-markets').textContent =
+  `Stocks: Finnhub · Crypto: CoinGecko · Updated ${stamp} · Refreshes every 30 min`;
 }
 
 function renderMarketsPage() {
