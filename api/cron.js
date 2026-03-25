@@ -127,18 +127,28 @@ Return ONLY valid JSON with no markdown or extra text:
       </div>
     `;
 
-    await resend.emails.send({
-      from: 'Mkt Brief <brief@mktbrief.com>',
-      to: subscribers,
-      subject: brief.headline || 'Today’s Mkt Brief',
-      html
-    });
+   const { data, error } = await resend.emails.send({
+  from: 'Mkt Brief <brief@mktbrief.com>',
+  to: subscribers,
+  replyTo: 'brief@mktbrief.com',
+  subject: brief.headline || 'Today’s Mkt Brief',
+  html,
+  text
+});
+
+if (error) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Resend send failed',
+    detail: error
+  });
+}
 
     return res.status(200).json({
-      ok: true,
-      generated: true,
-      sent: subscribers.length
-    });
+  ok: true,
+  sent: subscribers.length,
+  resendId: data?.id || null
+});
   } catch (e) {
     return res.status(500).json({
       ok: false,
