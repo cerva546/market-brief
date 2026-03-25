@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 
     // ✅ Send confirmation email
     await resend.emails.send({
-      from: 'Mkt Brief <onboarding@resend.dev>', // change later to your domain
+      from: 'Mkt Brief <brief@mktbrief.com>', // change later to your domain
       to: cleanEmail,
       subject: 'You’re subscribed to Mkt Brief',
       html: `
