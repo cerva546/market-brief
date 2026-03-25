@@ -128,7 +128,7 @@ Return ONLY valid JSON with no markdown or extra text:
     `;
 
     await resend.emails.send({
-      from: 'Mkt Brief <onboarding@resend.dev>',
+      from: 'Mkt Brief <brief@mktbrief.com>',
       to: subscribers,
       subject: brief.headline || 'Today’s Mkt Brief',
       html
