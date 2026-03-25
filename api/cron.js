@@ -102,21 +102,19 @@ Return ONLY valid JSON with no markdown or extra text:
 const subData = await subRes.json().catch(() => ({}));
 
 const subscribers = (subData.result || [])
-  .map(e => String(e).trim().toLowerCase())
+  .map(e => String(e).trim())
+  .map(e => {
+    if (e.startsWith('["') && e.endsWith('"]')) {
+      try {
+        const parsed = JSON.parse(e);
+        return Array.isArray(parsed) ? String(parsed[0] || '').trim().toLowerCase() : e;
+      } catch {
+        return e;
+      }
+    }
+    return e.toLowerCase();
+  })
   .filter(e => /^\S+@\S+\.\S+$/.test(e));
-
-return res.status(200).json({
-  ok: true,
-  subscribers
-});
-    
-if (!subscribers.length) {
-  return res.status(200).json({
-    ok: true,
-    sent: 0,
-    message: 'No valid subscribers found'
-  });
-}
 
     // 4. If no subscribers yet, just finish successfully
     if (!subscribers.length) {
