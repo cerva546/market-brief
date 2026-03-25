@@ -679,6 +679,19 @@ function formatArchiveDate(dateKey) {
     year: 'numeric'
   });
 }
+
+<div style="margin-top:20px; padding:14px; border:1px solid #ddd;">
+  <div style="font-family:monospace; font-size:10px; letter-spacing:1px; margin-bottom:8px;">
+    GET THE DAILY BRIEF
+  </div>
+  <input id="email-input" type="email" placeholder="Enter your email"
+    style="width:100%; padding:10px; margin-bottom:8px;" />
+  <button onclick="subscribeEmail()"
+    style="width:100%; padding:10px; cursor:pointer;">
+    Subscribe
+  </button>
+  <div id="sub-msg" style="font-size:12px; margin-top:6px;"></div>
+</div>
 </script>
 </body>
 </html>
