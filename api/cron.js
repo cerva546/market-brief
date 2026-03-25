@@ -153,9 +153,10 @@ ${brief.events || ''}
 
 What to watch: ${brief.close || ''}
 `;
-   const { data, error } = await resend.emails.send({
+const { data, error } = await resend.emails.send({
   from: 'Mkt Brief <brief@mktbrief.com>',
-  to: subscribers,
+  to: 'brief@mktbrief.com',        // required
+  bcc: subscribers,               // 👈 hides all emails
   replyTo: 'brief@mktbrief.com',
   subject: brief.headline || 'Today’s Mkt Brief',
   html,
