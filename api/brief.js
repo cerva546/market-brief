@@ -13,9 +13,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_KEY not set' });
   }
 
-  const cacheKey = `brief_${getETDateKey()}`;
+  const cacheKey = `brief_v2_${getETDateKey()}`;
 
-  // GET: return shared cached brief
   if (req.method === 'GET') {
     const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
     if (cached) return res.status(200).json(cached);
@@ -26,7 +25,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // POST: check shared cache first
   const existing = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
   if (existing) return res.status(200).json(existing);
 
@@ -35,7 +33,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing prompt' });
   }
 
-  // Fetch news headlines server-side
   let headlines = '(News headlines unavailable)';
   if (NEWS_API_KEY) {
     try {
@@ -56,14 +53,11 @@ export default async function handler(req, res) {
           .map(a => `• ${a.title}${a.description ? ' — ' + a.description.slice(0, 100) : ''} [${a.source?.name || 'Unknown'}]`)
           .join('\n');
 
-        if (!headlines.trim()) {
-          headlines = '(News headlines unavailable)';
-        }
+        if (!headlines.trim()) headlines = '(News headlines unavailable)';
       }
     } catch {}
   }
 
-  // Generate with Claude
   try {
     const fullPrompt = `${prompt}\n\nTODAY'S NEWS HEADLINES:\n${headlines}`;
 
@@ -107,7 +101,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Store in Upstash so everyone gets the same brief
     await upstashSet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey, brief, 30 * 60 * 60);
 
     return res.status(200).json(brief);
@@ -136,13 +129,19 @@ function getETDateKey() {
 
 async function upstashGet(url, token, key) {
   if (!url || !token) return null;
+
   try {
     const r = await fetch(`${url}/get/${key}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!r.ok) return null;
+
     const d = await r.json();
-    return d.result ? JSON.parse(d.result) : null;
+    if (!d.result) return null;
+
+    const parsed = JSON.parse(d.result);
+    if (typeof parsed === 'string') return JSON.parse(parsed);
+    return parsed;
   } catch {
     return null;
   }
@@ -150,6 +149,7 @@ async function upstashGet(url, token, key) {
 
 async function upstashSet(url, token, key, value, exSeconds) {
   if (!url || !token) return;
+
   try {
     await fetch(`${url}/set/${key}?EX=${exSeconds}`, {
       method: 'POST',
@@ -157,7 +157,7 @@ async function upstashSet(url, token, key, value, exSeconds) {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(JSON.stringify(value))
+      body: JSON.stringify(value)
     });
   } catch {}
 }
