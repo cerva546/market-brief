@@ -126,7 +126,19 @@ Return ONLY valid JSON with no markdown or extra text:
         <p style="font-size:12px;color:#666;">This email was generated automatically from today’s published Mkt Brief edition.</p>
       </div>
     `;
+const text = `
+${brief.headline || ''}
 
+${brief.deck || ''}
+
+${brief.intro || ''}
+
+${brief.macro || ''}
+
+${brief.events || ''}
+
+What to watch: ${brief.close || ''}
+`;
    const { data, error } = await resend.emails.send({
   from: 'Mkt Brief <brief@mktbrief.com>',
   to: subscribers,
