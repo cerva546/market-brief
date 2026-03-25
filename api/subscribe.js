@@ -18,30 +18,30 @@ export default async function handler(req, res) {
   const { email } = req.body || {};
   const cleanEmail = (email || '').trim().toLowerCase();
 
-  // ✅ Basic validation
   if (!cleanEmail || !/^\S+@\S+\.\S+$/.test(cleanEmail)) {
     return res.status(400).json({ error: 'Invalid email' });
   }
 
   try {
-    // ✅ Save to Upstash (set prevents duplicates automatically)
-    const saveRes = await fetch(`${UPSTASH_URL}/sadd/subscribers`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${UPSTASH_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify([cleanEmail])
-    });
+    // Store as a plain set member, not as a JSON array string
+    const saveRes = await fetch(
+      `${UPSTASH_URL}/sadd/subscribers/${encodeURIComponent(cleanEmail)}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${UPSTASH_TOKEN}`
+        }
+      }
+    );
 
     if (!saveRes.ok) {
       return res.status(500).json({ error: 'Could not save subscriber' });
     }
 
-    // ✅ Send confirmation email
     await resend.emails.send({
-      from: 'Mkt Brief <brief@mktbrief.com>', // change later to your domain
+      from: 'Mkt Brief <brief@mktbrief.com>',
       to: cleanEmail,
+      replyTo: 'brief@mktbrief.com',
       subject: 'You’re subscribed to Mkt Brief',
       html: `
         <div style="max-width:680px;margin:0 auto;padding:36px 20px;background:#f7f5f0;color:#1a1814;font-family:Arial,sans-serif;">
@@ -75,7 +75,6 @@ export default async function handler(req, res) {
     });
 
     return res.status(200).json({ ok: true });
-
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
