@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Mkt Brief — Daily market intelligence. Published every morning at 8 AM ET.">
 <title>Mkt Brief — Daily Market Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./Market Brief_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET ─────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-
-/* ─── TOKENS ─────────────────────────────────────────── */
 :root{
   --bg:#f7f5f0;
   --paper:#fffef9;
@@ -26,8 +24,6 @@ html{scroll-behavior:smooth;}
   --fbody:'IBM Plex Sans',sans-serif;
   --fmono:'IBM Plex Mono',monospace;
 }
-
-/* ─── BASE ─────────────────────────────────────────── */
 body{
   background:var(--bg);
   color:var(--ink);
@@ -35,8 +31,6 @@ body{
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
 }
-
-/* ─── TICKER ─────────────────────────────────────────── */
 .ticker-strip{
   background:var(--ink);
   padding:8px 0;
@@ -65,7 +59,6 @@ body{
 .t-dn{color:#fca5a5;}
 @keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
-/* ─── MASTHEAD ─────────────────────────────────────────── */
 .masthead{
   background:var(--paper);
   border-bottom:3px solid var(--ink);
@@ -118,7 +111,6 @@ body{
 }
 .nav-item.active,.nav-item:hover{color:var(--ink);border-bottom-color:var(--ink);}
 
-/* ─── PAGE LAYOUT ─────────────────────────────────────────── */
 .page-wrap{
   max-width:1140px;
   margin:0 auto;
@@ -134,11 +126,9 @@ body{
   .main-col{order:1;}
 }
 
-/* ─── SECTION VISIBILITY ─────────────────────────────────── */
 .section{display:none;}
 .section.active{display:block;}
 
-/* ─── ARTICLE ─────────────────────────────────────────── */
 .kicker{
   font-family:var(--fmono);
   font-size:10px;
@@ -294,7 +284,6 @@ body{
   margin-top:8px;
 }
 
-/* ─── SKELETON ─────────────────────────────────────────── */
 .skel{
   display:inline-block;
   background:var(--rule);
@@ -304,7 +293,6 @@ body{
 @keyframes pulse{0%,100%{opacity:.35;}50%{opacity:.7;}}
 .skel-block{display:block;width:100%;margin-bottom:10px;}
 
-/* ─── SIDEBAR ─────────────────────────────────────────── */
 .sidebar-rule{border:none;border-top:3px solid var(--ink);margin-bottom:16px;}
 .sidebar-label{
   font-family:var(--fmono);
@@ -318,7 +306,6 @@ body{
   justify-content:space-between;
 }
 
-/* Market table (sidebar + markets page) */
 .mkt-row{
   display:flex;
   justify-content:space-between;
@@ -356,7 +343,6 @@ body{
 }
 .refresh-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-/* AI info box */
 .ai-box{
   margin-top:20px;
   padding:14px 16px;
@@ -384,7 +370,6 @@ body{
 @keyframes pdot{0%,100%{opacity:.25;}50%{opacity:1;}}
 .ai-box-body{font-size:13px;color:var(--ink3);line-height:1.7;font-weight:300;}
 
-/* Past issues */
 .past-item{
   padding:13px 0;
   border-bottom:1px solid var(--rule);
@@ -402,7 +387,6 @@ body{
   color:var(--ink);
 }
 
-/* ─── MARKETS PAGE ─────────────────────────────────────── */
 .markets-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
@@ -425,7 +409,6 @@ body{
   border-bottom:1px solid var(--rule);
 }
 
-/* ─── ARCHIVE PAGE ─────────────────────────────────────── */
 .archive-list{max-width:700px;}
 .archive-item{
   padding:20px 0;
@@ -458,7 +441,6 @@ body{
   font-family:var(--fhead);
 }
 
-/* Archive modal */
 .modal-overlay{
   display:none;
   position:fixed;inset:0;
@@ -486,7 +468,6 @@ body{
 }
 .modal-close:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-/* ─── ABOUT PAGE ─────────────────────────────────────── */
 .about-wrap{max-width:680px;}
 .about-wrap h2{
   font-family:var(--fhead);
@@ -527,7 +508,6 @@ body{
 .about-wrap ul li:last-child{border-bottom:none;}
 .about-wrap ul li strong{color:var(--ink);}
 
-/* ─── TOAST ─────────────────────────────────────────── */
 .toast{
   position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
   background:var(--ink);color:#fff;
@@ -537,7 +517,6 @@ body{
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ─── FOOTER ─────────────────────────────────────────── */
 footer{
   background:var(--ink);
   color:rgba(255,255,255,0.45);
@@ -552,23 +531,23 @@ footer strong{color:rgba(255,255,255,0.9);}
 footer a{color:rgba(255,255,255,0.45);text-decoration:none;}
 footer a:hover{color:#fff;}
 
-/* ─── ANIMATIONS ─────────────────────────────────────── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .fade-up{animation:fadeUp 0.5s ease forwards;}
 </style>
 </head>
 <body>
 
-<!-- TICKER -->
 <div class="ticker-strip">
-  <div class="ticker-track" id="ticker-track"><span class="t-item"><span class="sym">BTC</span>70,699 <span class="t-up">+4.08%</span></span><span class="t-item"><span class="sym">BTC</span>70,699 <span class="t-up">+4.08%</span></span></div>
+  <div class="ticker-track" id="ticker-track">
+    <span class="t-item"><span class="sym">BTC</span>70,699 <span class="t-up">+4.08%</span></span>
+    <span class="t-item"><span class="sym">BTC</span>70,699 <span class="t-up">+4.08%</span></span>
+  </div>
 </div>
 
-<!-- MASTHEAD -->
 <header class="masthead">
   <div class="masthead-inner">
     <div class="masthead-top">
-      <a href="#" class="logo" onclick="switchSection(&#39;brief&#39;);return false;">Mkt<span class="logo-dot">.</span>Brief</a>
+      <a href="#" class="logo" onclick="switchSection('brief');return false;">Mkt<span class="logo-dot">.</span>Brief</a>
       <div class="masthead-meta">
         <div id="issue-date">MONDAY, MARCH 23, 2026</div>
         <div>Published 8 AM ET daily</div>
@@ -584,116 +563,90 @@ footer a:hover{color:#fff;}
   </div>
 </header>
 
-<!-- ═══ TODAY'S BRIEF ═══════════════════════════════════ -->
 <div class="section active" id="section-brief">
   <div class="page-wrap">
-
     <main class="main-col">
       <div class="kicker">Daily Market Briefing</div>
-      <h1 class="article-hed fade-up" id="article-hed">Bitcoin Surges Past $70,000 as Risk Appetite Returns Monday</h1>
-      <div class="article-deck" id="article-deck">Crypto markets lead a cautious risk-on open as Bitcoin climbs nearly 4% to reclaim the $70,000 level.</div>
+      <h1 class="article-hed fade-up" id="article-hed">Preparing today’s brief</h1>
+      <div class="article-deck" id="article-deck">Please wait a moment while today’s edition loads.</div>
       <div class="byline" id="byline">
         <span id="byline-date">Mon, March 23, 2026</span>
         <span>Sources: Bloomberg, Reuters, WSJ</span>
       </div>
-      <div class="body-text" id="body-intro"><p>Markets kicked off the trading week on a constructive note Monday, with Bitcoin's sharp rally above $70,000 setting an optimistic tone across risk assets. The leading cryptocurrency rose 3.84% to $70,614 at the open, its strongest push into that key psychological territory in recent sessions. With no major headline shocks to dampen sentiment, investors appeared willing to extend their risk appetite into the new week. Equity futures and broader digital asset markets tracked the move higher as traders assessed the macro backdrop.</p></div>
+      <div class="body-text" id="body-intro"><p>The briefing is being prepared.</p></div>
       <div id="pull-quote-slot"></div>
       <div id="movers-slot">
-      <div class="section-label">Notable movers <span style="font-size:9px;color:var(--ink3);">Based on latest data</span></div>
-      <div class="movers-grid">
-      <div class="mover-card up">
-        <div><div class="mc-sym">BTC</div><div class="mc-name">Bitcoin</div></div>
-        <div class="mc-chg up">+3.84%</div>
-      </div></div></div>
-      <div id="body-close-slot">
-    <div class="body-text">
-      <p>The macroeconomic environment remains a central focus for investors, with Federal Reserve policy expectations continuing to shape positioning across asset classes. No fresh headlines have materially shifted the rates outlook heading into Monday's session, leaving participants to weigh previously signalled Fed caution against signs of resilient economic momentum. Commodity markets and geopolitical developments have not produced notable headline catalysts ahead of the open, leaving Bitcoin's rally as the clearest signal of shifting near-term sentiment.</p>
-      <p>No major scheduled corporate earnings or economic data releases appear to have driven Monday's early market narrative, with Bitcoin's price action dominating the conversation. The absence of disruptive macro news allowed the crypto rally to take centre stage, suggesting the move may be technically or sentiment-driven rather than tied to a discrete fundamental catalyst. Investors will be watching for any policy commentary or data releases later in the week that could either validate or challenge the current risk-on mood.</p>
-      <p>With Bitcoin reclaiming the $70,000 level in Monday's open, investors will be closely watching whether the move attracts follow-through buying or fades into resistance as the week progresses. Key items on the radar include any Federal Reserve commentary that could recalibrate rate-cut expectations, as well as scheduled US economic data that may offer fresh insight into the growth and inflation picture. Corporate earnings and geopolitical developments will also bear monitoring for any surprises capable of shifting the current cautiously optimistic tone.</p>
-    </div></div>
-      <div id="sources-slot">
-    <div class="section-label">Sources used in this briefing</div>
-    <div class="source-chips"><span class="chip">Live Market Data</span></div></div>
-      <div id="disclaimer-slot">
-    <div class="disclaimer">
-      Briefing generated using real news headlines and live market data.
-      For informational purposes only — not financial advice.
-      Always consult a licensed advisor before making investment decisions.
-    </div></div>
+        <div class="section-label">Notable movers <span style="font-size:9px;color:var(--ink3);">Based on latest data</span></div>
+      </div>
+      <div id="body-close-slot"></div>
+      <div id="sources-slot"></div>
+      <div id="disclaimer-slot"></div>
     </main>
 
     <aside class="sidebar">
       <hr class="sidebar-rule">
-      <div class="sidebar-label">
-        Live Markets
-      </div>
-      <div id="market-table-sidebar"><div class="mkt-row"><div><div class="mkt-n">S&amp;P 500</div><div class="mkt-s">US Large Cap</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Nasdaq 100</div><div class="mkt-s">Tech Index</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Dow Jones</div><div class="mkt-s">Blue Chip</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Gold</div><div class="mkt-s">ETF</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Crude Oil</div><div class="mkt-s">WTI ETF</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Bitcoin</div><div class="mkt-s">Crypto</div></div><div><div class="mkt-p">70,699</div><div class="mkt-c"><span class="up">+2882.68 (+4.08%)</span></div></div></div></div>
-      <div class="data-note" id="data-note-sidebar">Polygon.io (prev close) · CoinGecko (BTC live)</div>
+      <div class="sidebar-label">Live Markets</div>
+      <div id="market-table-sidebar"></div>
+      <div class="data-note" id="data-note-sidebar">Loading live market data...</div>
 
       <div class="ai-box">
         <div class="ai-box-head"><span class="pulse-dot"></span>About this briefing</div>
-        <div class="ai-box-body">Each morning at 8&nbsp;AM&nbsp;ET, we analyze the latest market data and headlines from Bloomberg, Reuters, WSJ, and the Financial Times. The same edition is served to all readers that day.</div>
+        <div class="ai-box-body">Each morning at 8 AM ET, we analyze the latest market data and headlines from Bloomberg, Reuters, WSJ, and the Financial Times. The same edition is served to all readers that day.</div>
       </div>
 
       <hr class="sidebar-rule" style="margin-top:24px;">
       <div class="sidebar-label">Previous Issues</div>
-      <div id="past-issues-sidebar"><div class="past-item" onclick="openArchiveItem(0)">
-      <div class="past-date">Monday, March 23</div>
-      <div class="past-hed">Bitcoin Surges Past $70,000 as Risk Appetite Returns Monday</div>
-    </div></div>
+      <div id="past-issues-sidebar">
+        <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);padding:8px 0;">No past editions saved yet.</p>
+      </div>
     </aside>
-
   </div>
 </div>
 
-<!-- ═══ MARKETS ══════════════════════════════════════════ -->
 <div class="section" id="section-markets">
   <div class="page-wrap single" style="display:block;">
     <div class="kicker" style="margin-bottom:20px;">Live Market Data</div>
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
       <h2 style="font-family:var(--fhead);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.02em;">Markets Overview</h2>
-      
     </div>
     <div class="markets-grid" id="markets-grid">
-      <div class="mkt-card"><div class="mkt-card-title">US Equities</div><div id="mkt-us"><div class="mkt-row"><div><div class="mkt-n">S&amp;P 500</div><div class="mkt-s">SPY</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Nasdaq 100</div><div class="mkt-s">QQQ</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Dow Jones</div><div class="mkt-s">DIA</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Russell 2000</div><div class="mkt-s">IWM</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div></div></div>
-      <div class="mkt-card"><div class="mkt-card-title">Technology</div><div id="mkt-tech"><div class="mkt-row"><div><div class="mkt-n">Apple</div><div class="mkt-s">AAPL</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Nvidia</div><div class="mkt-s">NVDA</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Microsoft</div><div class="mkt-s">MSFT</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Meta</div><div class="mkt-s">META</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Amazon</div><div class="mkt-s">AMZN</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Tesla</div><div class="mkt-s">TSLA</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div></div></div>
-      <div class="mkt-card"><div class="mkt-card-title">Crypto</div><div id="mkt-crypto"><div class="mkt-row"><div><div class="mkt-n">Bitcoin</div><div class="mkt-s">BTC</div></div><div><div class="mkt-p">70,699</div><div class="mkt-c"><span class="up">+2882.68 (+4.08%)</span></div></div></div></div></div>
-      <div class="mkt-card"><div class="mkt-card-title">Commodities</div><div id="mkt-commodities"><div class="mkt-row"><div><div class="mkt-n">Gold</div><div class="mkt-s">GLD</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Crude Oil</div><div class="mkt-s">USO</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">Silver</div><div class="mkt-s">SLV</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div></div></div>
-      <div class="mkt-card"><div class="mkt-card-title">Fixed Income &amp; FX</div><div id="mkt-fixed"><div class="mkt-row"><div><div class="mkt-n">20yr Treasury</div><div class="mkt-s">TLT</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">High Yield</div><div class="mkt-s">HYG</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div><div class="mkt-row"><div><div class="mkt-n">US Dollar</div><div class="mkt-s">UUP</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div></div></div>
+      <div class="mkt-card"><div class="mkt-card-title">US Equities</div><div id="mkt-us"></div></div>
+      <div class="mkt-card"><div class="mkt-card-title">Technology</div><div id="mkt-tech"></div></div>
+      <div class="mkt-card"><div class="mkt-card-title">Crypto</div><div id="mkt-crypto"></div></div>
+      <div class="mkt-card"><div class="mkt-card-title">Commodities</div><div id="mkt-commodities"></div></div>
+      <div class="mkt-card"><div class="mkt-card-title">Fixed Income &amp; FX</div><div id="mkt-fixed"></div></div>
     </div>
-    <div class="data-note" id="data-note-markets" style="margin-top:16px;">Data: Polygon.io (previous close) · CoinGecko (BTC live 24h change)</div>
+    <div class="data-note" id="data-note-markets" style="margin-top:16px;">Loading live market data...</div>
   </div>
 </div>
 
-<!-- ═══ ARCHIVE ══════════════════════════════════════════ -->
 <div class="section" id="section-archive">
   <div class="page-wrap single" style="display:block;">
     <div class="kicker" style="margin-bottom:20px;">Past Editions</div>
     <h2 style="font-family:var(--fhead);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.02em;margin-bottom:8px;">Archive</h2>
     <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);margin-bottom:32px;letter-spacing:0.04em;">Every edition saved on this device. Click any issue to read.</p>
     <div class="archive-list" id="archive-list">
-      <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);">No past editions yet. Check back after your first 8&nbsp;AM&nbsp;ET brief generates.</p>
+      <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);">No past editions yet. Check back after your first brief loads.</p>
     </div>
   </div>
 </div>
 
-<!-- ═══ ABOUT ════════════════════════════════════════════ -->
 <div class="section" id="section-about">
   <div class="page-wrap single" style="display:block;">
     <div class="about-wrap">
       <div class="kicker" style="margin-bottom:20px;">About This Publication</div>
       <h2>What is Mkt Brief?</h2>
-      <p>Mkt Brief is a daily financial digest designed to give general readers a clear, concise picture of what moved markets each morning. Each edition is generated fresh at 8&nbsp;AM&nbsp;Eastern Time and served identically to all readers that day.</p>
-      <p>Each briefing draws on real-time market data and the latest financial headlines, covering equity indices, rates, commodities, major movers, and what to watch in the week ahead.</p>
+      <p>Mkt Brief is a daily financial digest designed to give general readers a clear, concise picture of what moved markets each morning. Each edition is generated fresh at 8 AM Eastern Time and served identically to all readers that day.</p>
+      <p>Each briefing draws on market data and the latest financial headlines, covering equity indices, rates, commodities, major movers, and what to watch next.</p>
 
       <h3>How it works</h3>
-      <p>Each morning at 8 AM ET, the page fetches real business headlines alongside live market prices. A briefing is drafted grounded in the day's actual news — no fabricated quotes, no invented events. Every reader sees the same edition instantly.</p>
+      <p>Each morning at 8 AM ET, the page uses current market data and real business headlines. A briefing is drafted based on the day’s actual news and stored so every reader sees the same edition instantly.</p>
 
       <h3>Data sources</h3>
       <ul>
-        <li><strong>NewsAPI.org</strong> — Real-time business headlines from hundreds of publishers</li>
-        <li><strong>Yahoo Finance</strong> — Real-time and delayed US equity prices</li>
-        <li><strong>CoinGecko</strong> — Live cryptocurrency prices</li>
+        <li><strong>NewsAPI.org</strong> — Business headlines</li>
+        <li><strong>Finnhub</strong> — Stock and ETF quotes</li>
+        <li><strong>CoinGecko</strong> — Cryptocurrency prices</li>
         <li><strong>Bloomberg, Reuters, WSJ, FT, CNBC</strong> — Sourced via NewsAPI headlines</li>
       </ul>
 
@@ -702,17 +655,16 @@ footer a:hover{color:#fff;}
 
       <h3>Technology</h3>
       <ul>
-        
-        <li><strong>News data</strong> — NewsAPI.org (real-time headlines)</li>
-        <li><strong>Market data</strong> — Yahoo Finance API, CoinGecko API</li>
-        <li><strong>Brief caching</strong> — Browser localStorage (per device)</li>
+        <li><strong>Brief generation</strong> — Anthropic API</li>
+        <li><strong>News data</strong> — NewsAPI.org</li>
+        <li><strong>Market data</strong> — Finnhub and CoinGecko</li>
+        <li><strong>Brief caching</strong> — Shared daily cache via server</li>
         <li><strong>Publishing cadence</strong> — Daily at 8:00 AM Eastern Time</li>
       </ul>
     </div>
   </div>
 </div>
 
-<!-- ARCHIVE MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">Close ✕</button>
@@ -720,58 +672,67 @@ footer a:hover{color:#fff;}
   </div>
 </div>
 
-<div class="toast" id="toast">Today's brief loaded from cache</div>
+<div class="toast" id="toast">Today's brief loaded</div>
 
-<!-- FOOTER -->
 <footer>
   <strong>Mkt Brief</strong><br>
   Daily market intelligence · Published every morning at 8:00 AM ET<br>
-  Market data: Yahoo Finance · CoinGecko ·
-  
-  Not financial advice · For informational purposes only<br>
+  Market data: Finnhub · CoinGecko · Not financial advice · For informational purposes only<br>
   © <span id="yr">2026</span> Market Brief
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   CONFIG
-═══════════════════════════════════════════════════════ */
-/* ANTHROPIC_KEY in Vercel env vars */
-/* NEWS_API_KEY in Vercel env vars */
-/* POLYGON_KEY replaced by /api/quotes */
+const MKT_US = [
+  {sym:'SPY',name:'S&P 500',sub:'ETF'},
+  {sym:'QQQ',name:'Nasdaq 100',sub:'ETF'},
+  {sym:'DIA',name:'Dow Jones',sub:'ETF'},
+  {sym:'IWM',name:'Russell 2000',sub:'Small Cap ETF'}
+];
+const MKT_TECH = [
+  {sym:'AAPL',name:'Apple',sub:'AAPL'},
+  {sym:'NVDA',name:'Nvidia',sub:'NVDA'},
+  {sym:'MSFT',name:'Microsoft',sub:'MSFT'},
+  {sym:'META',name:'Meta',sub:'META'},
+  {sym:'AMZN',name:'Amazon',sub:'AMZN'},
+  {sym:'TSLA',name:'Tesla',sub:'TSLA'}
+];
+const MKT_COMMODITIES = [
+  {sym:'GLD',name:'Gold',sub:'ETF'},
+  {sym:'USO',name:'Crude Oil',sub:'WTI ETF'},
+  {sym:'SLV',name:'Silver',sub:'ETF'}
+];
+const MKT_FIXED = [
+  {sym:'TLT',name:'20yr Treasury',sub:'Bond ETF'},
+  {sym:'HYG',name:'High Yield',sub:'Bond ETF'},
+  {sym:'UUP',name:'US Dollar',sub:'DXY ETF'}
+];
+const TICKER_ALL = ['SPY','QQQ','DIA','AAPL','NVDA','TSLA','AMZN','META','MSFT','GLD'];
 
-/* ═══════════════════════════════════════════════════════
-   MARKET DEFINITIONS
-═══════════════════════════════════════════════════════ */
-const MKT_US          = [{sym:'SPY',name:'S&P 500',sub:'ETF'},{sym:'QQQ',name:'Nasdaq 100',sub:'ETF'},{sym:'DIA',name:'Dow Jones',sub:'ETF'},{sym:'IWM',name:'Russell 2000',sub:'Small Cap ETF'}];
-const MKT_TECH        = [{sym:'AAPL',name:'Apple',sub:'AAPL'},{sym:'NVDA',name:'Nvidia',sub:'NVDA'},{sym:'MSFT',name:'Microsoft',sub:'MSFT'},{sym:'META',name:'Meta',sub:'META'},{sym:'AMZN',name:'Amazon',sub:'AMZN'},{sym:'TSLA',name:'Tesla',sub:'TSLA'}];
-const MKT_COMMODITIES = [{sym:'GLD',name:'Gold',sub:'ETF'},{sym:'USO',name:'Crude Oil',sub:'WTI ETF'},{sym:'SLV',name:'Silver',sub:'ETF'}];
-const MKT_FIXED       = [{sym:'TLT',name:'20yr Treasury',sub:'Bond ETF'},{sym:'HYG',name:'High Yield',sub:'Bond ETF'},{sym:'UUP',name:'US Dollar',sub:'DXY ETF'}];
-const TICKER_ALL      = ['SPY','QQQ','DIA','AAPL','NVDA','TSLA','AMZN','META','MSFT','GLD'];
-
-/* ═══════════════════════════════════════════════════════
-   DATE HELPERS
-═══════════════════════════════════════════════════════ */
-const NOW  = new Date();
+const NOW = new Date();
 const LONG = NOW.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-const MED  = NOW.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
+const MED = NOW.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'});
 document.getElementById('issue-date').textContent = LONG.toUpperCase();
 document.getElementById('byline-date').textContent = MED;
 document.getElementById('yr').textContent = NOW.getFullYear();
 
 function etDateKey() {
-  const etStr = new Date().toLocaleString('en-US', {timeZone:'America/New_York'});
-  const et = new Date(etStr);
-  return `${et.getFullYear()}-${String(et.getMonth()+1).padStart(2,'0')}-${String(et.getDate()).padStart(2,'0')}`;
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+  const y = parts.find(p => p.type === 'year').value;
+  const m = parts.find(p => p.type === 'month').value;
+  const d = parts.find(p => p.type === 'day').value;
+  return `${y}-${m}-${d}`;
 }
+
 function etHour() {
   const et = new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
   return et.getHours() + et.getMinutes()/60;
 }
 
-/* ═══════════════════════════════════════════════════════
-   SECTION NAVIGATION
-═══════════════════════════════════════════════════════ */
 function switchSection(name) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -783,9 +744,6 @@ document.querySelectorAll('.nav-item').forEach(el => {
   el.addEventListener('click', () => switchSection(el.dataset.section));
 });
 
-/* ═══════════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════════ */
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -795,16 +753,11 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-/* ═══════════════════════════════════════════════════════
-   MARKET DATA — Polygon.io (stocks) + CoinGecko (BTC)
-   Both support CORS from file:// and localhost.
-═══════════════════════════════════════════════════════ */
 let mktCache = {};
 
-/* Stock quotes via /api/quotes — key stays secure in Vercel */
 async function polygonQuote(sym) {
   try {
-    const r = await fetch(`/api/quotes?symbols=${encodeURIComponent(sym)}`,{signal:AbortSignal.timeout(10000)});
+    const r = await fetch(`/api/quotes?symbols=${encodeURIComponent(sym)}`, { signal: AbortSignal.timeout(10000) });
     if (!r.ok) return null;
     const d = await r.json();
     const q = d?.results?.[0];
@@ -812,131 +765,141 @@ async function polygonQuote(sym) {
     return {sym:q.sym,price:q.price,chg:q.chg,pct:q.pct};
   } catch { return null; }
 }
+
 async function batchQuotes(syms) {
   try {
-    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`,{signal:AbortSignal.timeout(12000)});
+    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`, { signal: AbortSignal.timeout(12000) });
     if (!r.ok) return {};
     const d = await r.json();
     const out = {};
-    (d?.results||[]).forEach(q=>{ if(!q.error) out[q.sym]=q; });
+    (d?.results || []).forEach(q => { if (!q.error) out[q.sym] = q; });
     return out;
   } catch { return {}; }
 }
 
-/* CoinGecko: all 6 cryptos */
-const CRYPTO_IDS={bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',dogecoin:'DOGE'};
-const CRYPTO_NAMES={BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',XRP:'XRP',BNB:'BNB',DOGE:'Dogecoin'};
-async function btcQuote(){return(await fetchAllCrypto())['BTC']||null;}
-async function fetchAllCrypto(){
-  try{
-    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${Object.keys(CRYPTO_IDS).join(',')}&vs_currencies=usd&include_24hr_change=true`,{signal:AbortSignal.timeout(8000)});
-    if(!r.ok)return{};
-    const d=await r.json();
-    const out={};
-    Object.entries(CRYPTO_IDS).forEach(([id,sym])=>{
-      const price=d[id]?.usd,pct=d[id]?.usd_24h_change??0;
-      if(price)out[sym]={sym,price,chg:price*(pct/100),pct};
+const CRYPTO_IDS = {bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',dogecoin:'DOGE'};
+const CRYPTO_NAMES = {BTC:'Bitcoin',ETH:'Ethereum',SOL:'Solana',XRP:'XRP',BNB:'BNB',DOGE:'Dogecoin'};
+
+async function fetchAllCrypto() {
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${Object.keys(CRYPTO_IDS).join(',')}&vs_currencies=usd&include_24hr_change=true`, { signal: AbortSignal.timeout(8000) });
+    if (!r.ok) return {};
+    const d = await r.json();
+    const out = {};
+    Object.entries(CRYPTO_IDS).forEach(([id,sym]) => {
+      const price = d[id]?.usd;
+      const pct = d[id]?.usd_24h_change ?? 0;
+      if (price) out[sym] = { sym, price, chg: price*(pct/100), pct };
     });
     return out;
-  }catch{return{};}
+  } catch { return {}; }
 }
 
-function fmtPrice(p)  { return p >= 1000 ? p.toLocaleString('en-US',{maximumFractionDigits:2}) : p.toFixed(2); }
+function fmtPrice(p) {
+  return p >= 1000 ? p.toLocaleString('en-US',{maximumFractionDigits:2}) : p.toFixed(2);
+}
 function fmtChange(r) {
   const up = r.chg >= 0;
   return `<span class="${up?'up':'dn'}">${up?'+':''}${r.chg.toFixed(2)} (${up?'+':''}${r.pct.toFixed(2)}%)</span>`;
 }
-function mktRowHtml(name, sub, r) {
-  if (!r) return `<div class="mkt-row"><div><div class="mkt-n">${name}</div><div class="mkt-s">${sub}</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">unavailable</div></div></div>`;
+function mktRowHtml(name, sub, r, isLoading = false) {
+  if (!r) {
+    return `<div class="mkt-row"><div><div class="mkt-n">${name}</div><div class="mkt-s">${sub}</div></div><div><div class="mkt-p flat">—</div><div class="mkt-c flat" style="font-size:10px;">${isLoading ? 'loading...' : 'unavailable'}</div></div></div>`;
+  }
   return `<div class="mkt-row"><div><div class="mkt-n">${name}</div><div class="mkt-s">${sub}</div></div><div><div class="mkt-p">${fmtPrice(r.price)}</div><div class="mkt-c">${fmtChange(r)}</div></div></div>`;
 }
 
-async function loadMarketGroup(defs, isCrypto) {
-  return Promise.all(defs.map(m => isCrypto ? btcQuote() : polygonQuote(m.sym)));
+function renderMarketsLoading() {
+  const sidebarDefs = [
+    {sym:'SPY',name:'S&P 500',sub:'US Large Cap'},
+    {sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},
+    {sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},
+    {sym:'GLD',name:'Gold',sub:'ETF'},
+    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'}
+  ];
+
+  let html = sidebarDefs.map(m => mktRowHtml(m.name, m.sub, mktCache[m.sym], !mktCache[m.sym])).join('');
+  html += mktRowHtml('Bitcoin','Crypto',mktCache['BTC'],!mktCache['BTC']);
+  html += mktRowHtml('Ethereum','Crypto',mktCache['ETH'],!mktCache['ETH']);
+  html += mktRowHtml('Solana','Crypto',mktCache['SOL'],!mktCache['SOL']);
+  document.getElementById('market-table-sidebar').innerHTML = html;
+
+  document.getElementById('mkt-us').innerHTML = MKT_US.map(m => mktRowHtml(m.name,m.sym,mktCache[m.sym],!mktCache[m.sym])).join('');
+  document.getElementById('mkt-tech').innerHTML = MKT_TECH.map(m => mktRowHtml(m.name,m.sym,mktCache[m.sym],!mktCache[m.sym])).join('');
+  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map(m => mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym],!mktCache[m.sym])).join('');
+  document.getElementById('mkt-fixed').innerHTML = MKT_FIXED.map(m => mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym],!mktCache[m.sym])).join('');
+  document.getElementById('mkt-crypto').innerHTML = Object.entries(CRYPTO_IDS).map(([id,sym]) => mktRowHtml(CRYPTO_NAMES[sym]||sym,sym,mktCache[sym],!mktCache[sym])).join('');
+  document.getElementById('data-note-sidebar').textContent = 'Loading live market data...';
+  document.getElementById('data-note-markets').textContent = 'Loading live market data...';
 }
 
 async function refreshMarkets() {
-  const allSyms=[...new Set(['SPY','QQQ','DIA','GLD','USO',...MKT_US.map(m=>m.sym),...MKT_TECH.map(m=>m.sym),...MKT_COMMODITIES.map(m=>m.sym),...MKT_FIXED.map(m=>m.sym),...TICKER_ALL])];
-  const [stockMap,cryptoMap]=await Promise.all([batchQuotes(allSyms),fetchAllCrypto()]);
-  Object.assign(mktCache,stockMap,cryptoMap);
-  const sd=[{sym:'SPY',name:'S&P 500',sub:'US Large Cap'},{sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},{sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},{sym:'GLD',name:'Gold',sub:'ETF'},{sym:'USO',name:'Crude Oil',sub:'WTI ETF'}];
-  let html=sd.map(m=>mktRowHtml(m.name,m.sub,mktCache[m.sym])).join('');
-  html+=mktRowHtml('Bitcoin','Crypto',mktCache['BTC']);
-  html+=mktRowHtml('Ethereum','Crypto',mktCache['ETH']);
-  html+=mktRowHtml('Solana','Crypto',mktCache['SOL']);
-  document.getElementById('market-table-sidebar').innerHTML=html;
-  const gotAny=Object.keys(stockMap).length>0||Object.keys(cryptoMap).length>0;
-  document.getElementById('data-note-sidebar').textContent=gotAny?'Finnhub · CoinGecko · Updates every 30 min':'Data unavailable — markets may be closed';
+  const allSyms = [...new Set([
+    'SPY','QQQ','DIA','GLD','USO',
+    ...MKT_US.map(m => m.sym),
+    ...MKT_TECH.map(m => m.sym),
+    ...MKT_COMMODITIES.map(m => m.sym),
+    ...MKT_FIXED.map(m => m.sym),
+    ...TICKER_ALL
+  ])];
+
+  const [stockMap, cryptoMap] = await Promise.all([batchQuotes(allSyms), fetchAllCrypto()]);
+  Object.assign(mktCache, stockMap, cryptoMap);
+
+  const sd = [
+    {sym:'SPY',name:'S&P 500',sub:'US Large Cap'},
+    {sym:'QQQ',name:'Nasdaq 100',sub:'Tech Index'},
+    {sym:'DIA',name:'Dow Jones',sub:'Blue Chip'},
+    {sym:'GLD',name:'Gold',sub:'ETF'},
+    {sym:'USO',name:'Crude Oil',sub:'WTI ETF'}
+  ];
+
+  let html = sd.map(m => mktRowHtml(m.name,m.sub,mktCache[m.sym],false)).join('');
+  html += mktRowHtml('Bitcoin','Crypto',mktCache['BTC'],false);
+  html += mktRowHtml('Ethereum','Crypto',mktCache['ETH'],false);
+  html += mktRowHtml('Solana','Crypto',mktCache['SOL'],false);
+  document.getElementById('market-table-sidebar').innerHTML = html;
+
+  const gotAny = Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0;
+  document.getElementById('data-note-sidebar').textContent = gotAny ? 'Finnhub · CoinGecko · Updates every 30 min' : 'Data unavailable — markets may be closed';
   await renderMarketsPage();
-  if(gotAny)buildTicker();
-  setTimeout(refreshMarkets,30*60*1000);
+  if (gotAny) buildTicker();
+
+  setTimeout(refreshMarkets, 30 * 60 * 1000);
 }
 
 async function renderMarketsPage() {
-  document.getElementById('mkt-us').innerHTML=MKT_US.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-tech').innerHTML=MKT_TECH.map(m=>mktRowHtml(m.name,m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-commodities').innerHTML=MKT_COMMODITIES.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
-  document.getElementById('mkt-fixed').innerHTML=MKT_FIXED.map(m=>mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym])).join('');
-  const ce=document.getElementById('mkt-crypto');
-  if(ce)ce.innerHTML=Object.entries(CRYPTO_IDS).map(([id,sym])=>mktRowHtml(CRYPTO_NAMES[sym]||sym,sym,mktCache[sym])).join('');
-  document.getElementById('data-note-markets').textContent='Stocks: Finnhub · Crypto: CoinGecko · Updates every 30 min';
+  document.getElementById('mkt-us').innerHTML = MKT_US.map(m => mktRowHtml(m.name,m.sym,mktCache[m.sym],false)).join('');
+  document.getElementById('mkt-tech').innerHTML = MKT_TECH.map(m => mktRowHtml(m.name,m.sym,mktCache[m.sym],false)).join('');
+  document.getElementById('mkt-commodities').innerHTML = MKT_COMMODITIES.map(m => mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym],false)).join('');
+  document.getElementById('mkt-fixed').innerHTML = MKT_FIXED.map(m => mktRowHtml(m.name,m.sub||m.sym,mktCache[m.sym],false)).join('');
+  document.getElementById('mkt-crypto').innerHTML = Object.entries(CRYPTO_IDS).map(([id,sym]) => mktRowHtml(CRYPTO_NAMES[sym]||sym,sym,mktCache[sym],false)).join('');
+  document.getElementById('data-note-markets').textContent = 'Stocks: Finnhub · Crypto: CoinGecko · Updates every 30 min';
 }
 
-async function buildTicker() {
-  const all=[...TICKER_ALL.map(s=>mktCache[s]),...Object.values(CRYPTO_IDS).map(sym=>mktCache[sym])].filter(Boolean);
-  if(!all.length)return;
-  const html=[...all,...all].map(r=>{
-    const up=r.chg>=0,p=r.price>=10000?r.price.toLocaleString('en-US',{maximumFractionDigits:0}):r.price>=1?r.price.toFixed(2):r.price.toFixed(4);
+function buildTicker() {
+  const all = [...TICKER_ALL.map(s => mktCache[s]), ...Object.values(CRYPTO_IDS).map(sym => mktCache[sym])].filter(Boolean);
+  if (!all.length) return;
+  const html = [...all, ...all].map(r => {
+    const up = r.chg >= 0;
+    const p = r.price >= 10000 ? r.price.toLocaleString('en-US',{maximumFractionDigits:0}) : r.price >= 1 ? r.price.toFixed(2) : r.price.toFixed(4);
     return `<span class="t-item"><span class="sym">${r.sym}</span>${p} <span class="${up?'t-up':'t-dn'}">${up?'+':''}${r.pct.toFixed(2)}%</span></span>`;
   }).join('');
-  document.getElementById('ticker-track').innerHTML=html;
+  document.getElementById('ticker-track').innerHTML = html;
 }
 
-/* ═══════════════════════════════════════════════════════
-   NEWS API — fetch real headlines
-═══════════════════════════════════════════════════════ */
-async function fetchNewsHeadlines() {
-  try {
-    /* Business top headlines + financial query for depth */
-    const [topRes, finRes] = await Promise.all([
-      fetch(`https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=15&apiKey=${NEWS_API_KEY}`),
-      fetch(`https://newsapi.org/v2/everything?q=stock+market+federal+reserve+economy&language=en&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`)
-    ]);
-    const topData = topRes.ok ? await topRes.json() : {articles:[]};
-    const finData = finRes.ok ? await finRes.json() : {articles:[]};
-
-    const all = [...(topData.articles||[]), ...(finData.articles||[])];
-    /* Deduplicate by title, take top 20 */
-    const seen = new Set();
-    const unique = all.filter(a => {
-      if (!a.title || seen.has(a.title)) return false;
-      seen.add(a.title); return true;
-    }).slice(0, 20);
-
-    return unique.map(a =>
-      `• ${a.title}${a.description ? ' — ' + a.description.slice(0,120) : ''} [${a.source?.name || 'Unknown'}, ${a.publishedAt?.slice(0,10)}]`
-    ).join('\n');
-  } catch(e) {
-    return '(News headlines unavailable)';
-  }
-}
-
-/* ═══════════════════════════════════════════════════════
-   AI BRIEFING — with localStorage daily cache
-═══════════════════════════════════════════════════════ */
 function getCachedBrief(dateKey) {
-  try { return JSON.parse(localStorage.getItem('brief_' + dateKey)); } catch(e) { return null; }
+  try { return JSON.parse(localStorage.getItem('brief_' + dateKey)); } catch { return null; }
 }
 function setCachedBrief(dateKey, data) {
   try {
     localStorage.setItem('brief_' + dateKey, JSON.stringify(data));
-    /* Keep only last 30 days */
     const keys = Object.keys(localStorage).filter(k => k.startsWith('brief_')).sort().reverse();
     keys.slice(30).forEach(k => localStorage.removeItem(k));
-  } catch(e) {}
+  } catch {}
 }
 
-async function generateBrief() {
+function buildBriefPrompt() {
   const spy = mktCache['SPY'];
   const qqq = mktCache['QQQ'];
   const dia = mktCache['DIA'];
@@ -945,7 +908,11 @@ async function generateBrief() {
   const uso = mktCache['USO'];
 
   const fmt = (r, label) => r
-    ? `${label} ${r.chg>=0?'▲':'▼'} ${Math.abs(r.pct).toFixed(2)}% at ${r.price>=1000?r.price.toLocaleString('en-US',{maximumFractionDigits:2}):r.price.toFixed(2)}`
+    ? `${label} ${r.chg >= 0 ? '▲' : '▼'} ${Math.abs(r.pct).toFixed(2)}% at ${
+        r.price >= 1000
+          ? r.price.toLocaleString('en-US', { maximumFractionDigits: 2 })
+          : r.price.toFixed(2)
+      }`
     : null;
 
   const mktLines = [
@@ -953,36 +920,84 @@ async function generateBrief() {
     fmt(qqq, 'Nasdaq 100 (QQQ)'),
     fmt(dia, 'Dow Jones (DIA)'),
     fmt(btc, 'Bitcoin'),
+    fmt(mktCache['ETH'], 'Ethereum'),
+    fmt(mktCache['SOL'], 'Solana'),
     fmt(gld, 'Gold (GLD ETF)'),
-    fmt(uso, 'Crude Oil (USO ETF)'),
+    fmt(uso, 'Crude Oil (USO ETF)')
   ].filter(Boolean).join('\n') || 'Live market data unavailable.';
 
-  const prompt = `You are the editor of Market Brief, a concise daily financial digest. Today is ${LONG}.
+  return `You are the editor of Market Brief, a short daily market and business news summary. Today is ${LONG}.
 
-LIVE MARKET DATA (previous close vs open):
+LIVE MARKET DATA:
 ${mktLines}
 
-Write a professional newspaper-style daily market briefing grounded in the headlines above. Do NOT include any quotes from named individuals — do not fabricate or attribute statements to real people. Base all analysis strictly on the provided headlines and market data.
+Write in clear, simple, user-friendly language for an average reader who follows the news but is not a finance expert.
 
-Return ONLY valid JSON with no markdown or commentary:
+Focus on the biggest things moving markets and shaping the day. This may include:
+- stock market moves
+- crypto moves
+- interest rates and the Fed
+- inflation, jobs, tariffs, or economic data
+- major company news
+- major political actions or government decisions
+- important global or geopolitical developments
+- anything else that is clearly one of the biggest stories affecting markets today
+
+Keep the tone smart, calm, modern, and accessible.
+Avoid heavy jargon.
+If you use a financial term, explain it simply.
+Prefer short, direct sentences.
+Do not sound robotic or overly formal.
+Do not make up facts, quotes, or events.
+Do not include quotes from named people.
+Base everything only on the real market data above and the news headlines that will be added server-side.
+
+Return ONLY valid JSON with no markdown or extra text:
 {
-  "headline": "punchy headline max 12 words capturing the dominant story",
-  "deck": "one compelling sentence summarising the day's market picture",
-  "intro": "3-4 sentence opening paragraph covering the main market moves and top story",
-  "macro": "one paragraph covering rates, Fed policy, commodities, and any geopolitical factors visible in the headlines",
-  "events": "one paragraph summarising key economic events or corporate news from today's headlines",
+  "headline": "short, strong headline, max 12 words",
+  "deck": "one clear sentence that sums up the day",
+  "intro": "3-4 sentence opening paragraph explaining the main story of the day in simple language",
+  "macro": "one paragraph explaining the big-picture forces driving markets today",
+  "events": "one paragraph covering the most important company, political, economic, or crypto developments",
   "movers": [
-    {"sym":"AAPL","name":"Apple","dir":"up","pct":"1.2"},
-    {"sym":"TSLA","name":"Tesla","dir":"dn","pct":"2.3"},
-    {"sym":"NVDA","name":"Nvidia","dir":"up","pct":"3.0"},
-    {"sym":"XOM","name":"Exxon","dir":"dn","pct":"0.9"}
+    {"sym":"SPY","name":"S&P 500","dir":"up","pct":"0.4"},
+    {"sym":"BTC","name":"Bitcoin","dir":"up","pct":"1.2"}
   ],
-  "close": "one paragraph on key data, earnings, or events investors should watch this week",
-  "sources": ["list", "of", "source", "names", "from", "the", "headlines", "used"]
+  "close": "one short paragraph on what readers should watch next",
+  "sources": ["list", "of", "source", "names", "used"]
 }`;
+}
 
-  const res=await fetch('/api/brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
-  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'Brief API error '+res.status);}
+function renderGeneratingState() {
+  document.getElementById('article-hed').textContent = 'Preparing today’s brief';
+  document.getElementById('article-deck').textContent = 'Please wait a moment.';
+  document.getElementById('body-intro').innerHTML = '<p>The briefing is being prepared.</p>';
+  document.getElementById('pull-quote-slot').innerHTML = '';
+  document.getElementById('body-close-slot').innerHTML = '';
+  document.getElementById('movers-slot').innerHTML = '<div class="section-label">Notable movers <span style="font-size:9px;color:var(--ink3);">Based on latest data</span></div>';
+  document.getElementById('sources-slot').innerHTML = '';
+  document.getElementById('disclaimer-slot').innerHTML = '';
+}
+
+function renderBriefUnavailable(detail = '') {
+  document.getElementById('article-hed').textContent = 'Brief unavailable';
+  document.getElementById('article-deck').textContent = 'There was a problem loading today’s briefing.';
+  document.getElementById('body-intro').innerHTML = `<p>Please refresh the page in a moment.${detail ? ' ' + detail : ''}</p>`;
+  document.getElementById('pull-quote-slot').innerHTML = '';
+  document.getElementById('body-close-slot').innerHTML = '';
+}
+
+async function generateBrief() {
+  const prompt = buildBriefPrompt();
+  const res = await fetch('/api/brief', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prompt})
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.error || 'Brief API error ' + res.status);
+  }
   return await res.json();
 }
 
@@ -991,8 +1006,6 @@ function renderBrief(j) {
   document.getElementById('article-hed').classList.add('fade-up');
   document.getElementById('article-deck').textContent = j.deck;
   document.getElementById('body-intro').innerHTML = `<p>${j.intro}</p>`;
-
-  /* No pull quotes — slot stays empty */
   document.getElementById('pull-quote-slot').innerHTML = '';
 
   document.getElementById('body-close-slot').innerHTML = `
@@ -1011,11 +1024,13 @@ function renderBrief(j) {
     document.getElementById('movers-slot').innerHTML = `
       <div class="section-label">Notable movers <span style="font-size:9px;color:var(--ink3);">Based on latest data</span></div>
       <div class="movers-grid">${cards}</div>`;
+  } else {
+    document.getElementById('movers-slot').innerHTML = '<div class="section-label">Notable movers <span style="font-size:9px;color:var(--ink3);">Based on latest data</span></div>';
   }
 
   const srcList = j.sources?.length
     ? j.sources.map(s => `<span class="chip">${s}</span>`).join('')
-    : '<span class="chip">NewsAPI</span><span class="chip">Yahoo Finance</span><span class="chip">CoinGecko</span>';
+    : '<span class="chip">NewsAPI</span><span class="chip">Finnhub</span><span class="chip">CoinGecko</span>';
 
   document.getElementById('sources-slot').innerHTML = `
     <div class="section-label">Sources used in this briefing</div>
@@ -1023,15 +1038,73 @@ function renderBrief(j) {
 
   document.getElementById('disclaimer-slot').innerHTML = `
     <div class="disclaimer">
-      AI-generated briefing based on real news headlines via NewsAPI.org and live market data.
+      AI-generated briefing based on real news headlines and market data.
       For informational purposes only &mdash; not financial advice.
       Always consult a licensed advisor before making investment decisions.
     </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════
-   ARCHIVE
-═══════════════════════════════════════════════════════ */
+async function loadOrGenerateBrief() {
+  const todayKey = etDateKey();
+  const localCached = getCachedBrief(todayKey);
+
+  if (localCached?.headline) {
+    renderBrief(localCached);
+    renderPastIssuesSidebar(getArchive());
+    showToast("Today's brief loaded");
+    return;
+  }
+
+  const hour = etHour();
+  if (hour < 8) {
+    const archive = getArchive();
+    if (archive.length) {
+      renderBrief(archive[0]);
+      document.getElementById('article-hed').textContent = archive[0].headline + ' (Previous Edition)';
+      showToast("Today's brief publishes at 8 AM ET");
+    } else {
+      document.getElementById('article-hed').textContent = "Today's brief publishes at 8 AM ET";
+      document.getElementById('article-deck').textContent = 'Check back after 8:00 AM Eastern Time.';
+      document.getElementById('body-intro').innerHTML = '<p>Mkt Brief publishes a fresh briefing every morning at 8 AM ET.</p>';
+    }
+    renderPastIssuesSidebar(getArchive());
+
+    const etNow = new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
+    const et8am = new Date(etNow);
+    et8am.setHours(8,0,0,0);
+    const ms = et8am - etNow;
+    if (ms > 0) setTimeout(() => init(), ms + 5000);
+    return;
+  }
+
+  try {
+    const cachedRes = await fetch('/api/brief', { method:'GET', cache:'no-store' });
+    if (cachedRes.status === 200) {
+      const cachedBrief = await cachedRes.json();
+      if (cachedBrief?.headline) {
+        setCachedBrief(todayKey, cachedBrief);
+        renderBrief(cachedBrief);
+        renderPastIssuesSidebar(getArchive());
+        showToast("Today's brief loaded");
+        return;
+      }
+    }
+  } catch {}
+
+  try {
+    renderGeneratingState();
+    const generatedBrief = await generateBrief();
+    if (!generatedBrief?.headline) throw new Error('Empty response');
+    setCachedBrief(todayKey, generatedBrief);
+    renderBrief(generatedBrief);
+    renderPastIssuesSidebar(getArchive());
+    showToast("Today's brief is ready");
+  } catch (e) {
+    console.error('Brief load failed:', e);
+    renderBriefUnavailable(e.message);
+  }
+}
+
 function getArchive() {
   return Object.keys(localStorage)
     .filter(k => k.startsWith('brief_'))
@@ -1055,7 +1128,6 @@ function renderArchiveList() {
       <div class="archive-item-deck">${item.deck || ''}</div>
     </div>`;
   }).join('');
-  /* Also update sidebar past issues */
   renderPastIssuesSidebar(items);
 }
 
@@ -1106,51 +1178,12 @@ function closeModal(e) {
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
-/* ═══════════════════════════════════════════════════════
-   INIT — 8 AM ET daily brief logic
-═══════════════════════════════════════════════════════ */
 async function init() {
+  renderMarketsLoading();
   refreshMarkets();
-  const todayKey=etDateKey();
-  const localCached=getCachedBrief(todayKey);
-  if(localCached){renderBrief(localCached);renderPastIssuesSidebar(getArchive());showToast("Today's brief loaded");return;}
-  const hour=etHour();
-  if(hour<8){
-    const archive=getArchive();
-    if(archive.length){renderBrief(archive[0]);document.getElementById('article-hed').textContent=archive[0].headline+' (Previous Edition)';showToast("Today's brief publishes at 8 AM ET");}
-    else{document.getElementById('article-hed').textContent="Today's brief publishes at 8 AM ET";document.getElementById('article-deck').textContent='Check back after 8:00 AM Eastern Time.';document.getElementById('body-intro').innerHTML='<p>Mkt Brief publishes a fresh briefing every morning at 8 AM ET.</p>';}
-    renderPastIssuesSidebar(getArchive());
-    const etNow=new Date(new Date().toLocaleString('en-US',{timeZone:'America/New_York'}));
-    const et8am=new Date(etNow);et8am.setHours(8,0,0,0);
-    const ms=et8am-etNow;if(ms>0)setTimeout(()=>init(),ms+5000);
-    return;
-  }
-  /* Check shared server cache first — same brief for all visitors */
-  try{
-    const sr=await fetch('/api/brief',{method:'GET'});
-    if(sr.status===200){
-      const sb=await sr.json();
-      if(sb?.headline){setCachedBrief(todayKey,sb);renderBrief(sb);renderPastIssuesSidebar(getArchive());showToast("Today's brief loaded");return;}
-    }
-  }catch{}
-  /* No shared cache — generate once */
-  let briefRendered=false;
-  try{
-    const brief=await generateBrief();
-    if(!brief||!brief.headline)throw new Error('Empty response');
-    setCachedBrief(todayKey,brief);briefRendered=true;
-    renderBrief(brief);renderPastIssuesSidebar(getArchive());showToast("Today's brief is ready");
-  }catch(err){
-    console.error('Brief generation failed:',err);
-    if(!briefRendered){
-      document.getElementById('article-hed').textContent='Brief generating — please refresh';
-      document.getElementById('article-deck').textContent='Refresh the page in a moment.';
-      document.getElementById('body-intro').innerHTML='<p>The briefing is being prepared. Please refresh.</p>';
-    }
-  }
+  await loadOrGenerateBrief();
 }
 init();
 </script>
-
-
-</body></html>
+</body>
+</html>
