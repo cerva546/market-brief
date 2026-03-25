@@ -27,7 +27,10 @@ export default async function handler(req, res) {
   }
 
   const existing = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
-  if (existing) return res.status(200).json(existing);
+if (existing) {
+  await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
+  return res.status(200).json(existing);
+}
 
   const { prompt } = req.body || {};
   if (!prompt) {
