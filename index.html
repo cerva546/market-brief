@@ -261,6 +261,19 @@ footer a:hover{color:#fff;}
 
 <div class="toast" id="toast">Today's brief loaded</div>
 
+<div style="margin-top:20px; padding:14px; border:1px solid #ddd;">
+  <div style="font-family:monospace; font-size:10px; letter-spacing:1px; margin-bottom:8px;">
+    GET THE DAILY BRIEF
+  </div>
+  <input id="email-input" type="email" placeholder="Enter your email"
+    style="width:100%; padding:10px; margin-bottom:8px;" />
+  <button onclick="subscribeEmail()"
+    style="width:100%; padding:10px; cursor:pointer;">
+    Subscribe
+  </button>
+  <div id="sub-msg" style="font-size:12px; margin-top:6px;"></div>
+</div>
+
 <footer>
   <strong>Mkt Brief</strong><br>
   Daily market intelligence · Published every morning at 8:00 AM ET<br>
@@ -680,18 +693,32 @@ function formatArchiveDate(dateKey) {
   });
 }
 
-<div style="margin-top:20px; padding:14px; border:1px solid #ddd;">
-  <div style="font-family:monospace; font-size:10px; letter-spacing:1px; margin-bottom:8px;">
-    GET THE DAILY BRIEF
-  </div>
-  <input id="email-input" type="email" placeholder="Enter your email"
-    style="width:100%; padding:10px; margin-bottom:8px;" />
-  <button onclick="subscribeEmail()"
-    style="width:100%; padding:10px; cursor:pointer;">
-    Subscribe
-  </button>
-  <div id="sub-msg" style="font-size:12px; margin-top:6px;"></div>
-</div>
+async function subscribeEmail() {
+  const email = document.getElementById('email-input').value;
+  const msg = document.getElementById('sub-msg');
+
+  if (!email) {
+    msg.textContent = 'Enter a valid email';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+
+    if (res.ok) {
+      msg.textContent = 'Subscribed ✅';
+    } else {
+      msg.textContent = 'Error subscribing';
+    }
+  } catch {
+    msg.textContent = 'Network error';
+  }
+}
+
 </script>
 </body>
 </html>
