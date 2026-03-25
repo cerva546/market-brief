@@ -96,6 +96,20 @@ body{background:var(--bg);color:var(--ink);font-family:var(--fbody);min-height:1
 .mkt-card{background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:20px;}
 .mkt-card-title{font-family:var(--fmono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule);}
 
+.archive-list{max-width:700px;}
+.archive-item{padding:20px 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:opacity 0.15s;}
+.archive-item:last-child{border-bottom:none;}
+.archive-item:hover{opacity:0.7;}
+.archive-item-date{font-family:var(--fmono);font-size:10px;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.archive-item-hed{font-family:var(--fhead);font-size:20px;font-weight:700;line-height:1.3;color:var(--ink);margin-bottom:6px;}
+.archive-item-deck{font-size:13px;color:var(--ink3);font-style:italic;font-family:var(--fhead);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,24,20,0.7);z-index:500;overflow-y:auto;padding:3rem 1rem;}
+.modal-overlay.open{display:block;}
+.modal-box{background:var(--paper);max-width:700px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem);position:relative;border-radius:3px;}
+.modal-close{position:absolute;top:16px;right:16px;font-family:var(--fmono);font-size:11px;color:var(--ink3);background:none;border:1px solid var(--rule);padding:4px 10px;border-radius:2px;cursor:pointer;transition:all 0.15s;}
+.modal-close:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+
 .about-wrap{max-width:680px;}
 .about-wrap h2{font-family:var(--fhead);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:1rem;letter-spacing:-0.02em;}
 .about-wrap h3{font-family:var(--fmono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin:2rem 0 0.75rem;padding-bottom:8px;border-bottom:1px solid var(--rule);}
@@ -170,7 +184,7 @@ footer a:hover{color:#fff;}
 
       <div class="ai-box">
         <div class="ai-box-head"><span class="pulse-dot"></span>About this briefing</div>
-        <div class="ai-box-body">Each morning at 8 AM ET, the daily brief is generated once on the server, stored, and then served identically to every reader on every device that day.</div>
+        <div class="ai-box-body">At 8 AM ET, the daily brief is generated once on the server, stored in Upstash, and then served identically to every reader on every device that day.</div>
       </div>
     </aside>
   </div>
@@ -195,9 +209,12 @@ footer a:hover{color:#fff;}
 
 <div class="section" id="section-archive">
   <div class="page-wrap single" style="display:block;">
-    <div class="kicker" style="margin-bottom:20px;">Archive</div>
+    <div class="kicker" style="margin-bottom:20px;">Past Editions</div>
     <h2 style="font-family:var(--fhead);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.02em;margin-bottom:8px;">Archive</h2>
-    <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);margin-bottom:32px;letter-spacing:0.04em;">This site now uses server-only daily editions. Archive support can be added later from server storage.</p>
+    <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);margin-bottom:32px;letter-spacing:0.04em;">Daily editions saved on the server.</p>
+    <div class="archive-list" id="archive-list">
+      <p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);">Loading archive...</p>
+    </div>
   </div>
 </div>
 
@@ -228,10 +245,17 @@ footer a:hover{color:#fff;}
         <li><strong>Brief generation</strong> — Anthropic API</li>
         <li><strong>News data</strong> — NewsAPI.org</li>
         <li><strong>Market data</strong> — Finnhub and CoinGecko</li>
-        <li><strong>Brief caching</strong> — Upstash server cache</li>
+        <li><strong>Brief caching</strong> — Upstash server cache and archive</li>
         <li><strong>Publishing cadence</strong> — Daily at 8:00 AM Eastern Time</li>
       </ul>
     </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">Close ✕</button>
+    <div id="modal-content"></div>
   </div>
 </div>
 
@@ -283,6 +307,10 @@ function switchSection(name) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('section-' + name)?.classList.add('active');
   document.querySelector(`[data-section="${name}"]`)?.classList.add('active');
+
+  if (name === 'archive') {
+    loadArchiveFromServer();
+  }
 }
 document.querySelectorAll('.nav-item').forEach(el => {
   el.addEventListener('click', () => switchSection(el.dataset.section));
@@ -298,6 +326,7 @@ function showToast(msg) {
 }
 
 let mktCache = {};
+let archiveItems = [];
 
 async function batchQuotes(syms) {
   try {
@@ -521,6 +550,87 @@ async function loadBriefFromServer() {
     renderBriefUnavailable(e.message);
   }
 }
+
+async function loadArchiveFromServer() {
+  try {
+    const res = await fetch('/api/archive', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Archive load failed');
+
+    const data = await res.json();
+    archiveItems = data.items || [];
+    renderArchiveList();
+  } catch (e) {
+    document.getElementById('archive-list').innerHTML =
+      '<p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);">Archive unavailable right now.</p>';
+  }
+}
+
+function renderArchiveList() {
+  const el = document.getElementById('archive-list');
+
+  if (!archiveItems.length) {
+    el.innerHTML = '<p style="font-family:var(--fmono);font-size:11px;color:var(--ink3);">No archived editions yet.</p>';
+    return;
+  }
+
+  el.innerHTML = archiveItems.map((item, i) => {
+    const d = new Date(item.dateKey + 'T12:00:00');
+    const label = d.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    return `<div class="archive-item" onclick="openArchiveItem(${i})">
+      <div class="archive-item-date">${label}</div>
+      <div class="archive-item-hed">${item.headline || '—'}</div>
+      <div class="archive-item-deck">${item.deck || ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function openArchiveItem(idx) {
+  const item = archiveItems[idx];
+  if (!item) return;
+
+  const d = new Date(item.dateKey + 'T12:00:00');
+  const label = d.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+
+  const moversHtml = item.movers?.map(m => `
+    <div class="mover-card ${m.dir}" style="margin-bottom:8px;">
+      <div><div class="mc-sym">${m.sym}</div><div class="mc-name">${m.name}</div></div>
+      <div class="mc-chg ${m.dir}">${m.dir === 'up' ? '+' : '-'}${m.pct}%</div>
+    </div>`).join('') || '';
+
+  document.getElementById('modal-content').innerHTML = `
+    <div style="font-family:var(--fmono);font-size:10px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">${label}</div>
+    <h2 style="font-family:var(--fhead);font-size:clamp(1.4rem,3vw,2rem);font-weight:900;letter-spacing:-0.02em;margin-bottom:12px;">${item.headline}</h2>
+    <div style="font-family:var(--fhead);font-style:italic;font-size:15px;color:var(--ink2);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);padding:12px 0;margin-bottom:16px;">${item.deck}</div>
+    <div class="body-text"><p>${item.intro}</p></div>
+    <div class="body-text"><p>${item.macro}</p>${item.events ? `<p>${item.events}</p>` : ''}<p>${item.close}</p></div>
+    ${moversHtml ? `<div class="section-label">Top movers</div><div class="movers-grid">${moversHtml}</div>` : ''}
+    <div class="disclaimer" style="margin-top:24px;">For informational purposes only. Not financial advice.</div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  const overlay = document.getElementById('modal-overlay');
+  if (!e || e.target === overlay || e.type === 'click') {
+    overlay.classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 
 async function init() {
   renderMarketsLoading();
