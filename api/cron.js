@@ -156,8 +156,9 @@ if (error) {
   });
 }
 
-    return res.status(200).json({
+ return res.status(200).json({
   ok: true,
+  generated: true,
   sent: subscribers.length,
   resendId: data?.id || null
 });
