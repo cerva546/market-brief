@@ -330,13 +330,26 @@ let archiveItems = [];
 
 async function batchQuotes(syms) {
   try {
-    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`, { signal: AbortSignal.timeout(12000) });
-    if (!r.ok) return {};
+    const r = await fetch(`/api/quotes?symbols=${syms.map(encodeURIComponent).join(',')}`, {
+      signal: AbortSignal.timeout(12000)
+    });
+
+    if (!r.ok) return { quotes: {}, updatedAt: null, cached: false };
+
     const d = await r.json();
     const out = {};
-    (d?.results || []).forEach(q => { if (!q.error) out[q.sym] = q; });
-    return out;
-  } catch { return {}; }
+    (d?.results || []).forEach(q => {
+      if (!q.error) out[q.sym] = q;
+    });
+
+    return {
+      quotes: out,
+      updatedAt: d.updatedAt || null,
+      cached: !!d.cached
+    };
+  } catch {
+    return { quotes: {}, updatedAt: null, cached: false };
+  }
 }
 
 const CRYPTO_IDS = {bitcoin:'BTC',ethereum:'ETH',solana:'SOL',ripple:'XRP',binancecoin:'BNB',dogecoin:'DOGE'};
@@ -405,7 +418,12 @@ async function refreshMarkets() {
     ...TICKER_ALL
   ])];
 
-  const [stockMap, cryptoMap] = await Promise.all([batchQuotes(allSyms), fetchAllCrypto()]);
+  const [stockData, cryptoMap] = await Promise.all([
+    batchQuotes(allSyms),
+    fetchAllCrypto()
+  ]);
+
+  const stockMap = stockData.quotes;
   Object.assign(mktCache, stockMap, cryptoMap);
 
   const sd = [
@@ -416,30 +434,37 @@ async function refreshMarkets() {
     {sym:'USO',name:'Crude Oil',sub:'WTI ETF'}
   ];
 
-  let html = sd.map(m => mktRowHtml(m.name,m.sub,mktCache[m.sym],false)).join('');
+  let html = sd.map(m => mktRowHtml(m.name, m.sub, mktCache[m.sym], false)).join('');
   html += mktRowHtml('Bitcoin','Crypto',mktCache['BTC'],false);
   html += mktRowHtml('Ethereum','Crypto',mktCache['ETH'],false);
   html += mktRowHtml('Solana','Crypto',mktCache['SOL'],false);
   document.getElementById('market-table-sidebar').innerHTML = html;
 
-  const gotAny = Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0;
-  document.getElementById('data-note-sidebar').textContent = gotAny ? 'Finnhub · CoinGecko · Updates every 30 min' : 'Data unavailable — markets may be closed';
   renderMarketsPage();
-  if (gotAny) buildTicker();
+  if (Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0) {
+    buildTicker();
+  }
+
+  let updateLabel = 'Snapshot time unavailable';
+  if (stockData.updatedAt) {
+    const stamp = new Date(stockData.updatedAt).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+    updateLabel = `Updated ${stamp}`;
+  }
+
+  const gotAny = Object.keys(stockMap).length > 0 || Object.keys(cryptoMap).length > 0;
+
+  document.getElementById('data-note-sidebar').textContent = gotAny
+    ? `Finnhub · CoinGecko · ${updateLabel} · Refreshes every 30 min`
+    : 'Data unavailable — markets may be closed';
+
+  document.getElementById('data-note-markets').textContent = gotAny
+    ? `Stocks: Finnhub · Crypto: CoinGecko · ${updateLabel} · Refreshes every 30 min`
+    : 'Data unavailable — markets may be closed';
 
   setTimeout(refreshMarkets, 30 * 60 * 1000);
-
-  const now = new Date();
-const stamp = now.toLocaleTimeString('en-US', {
-  hour: 'numeric',
-  minute: '2-digit'
-});
-
-document.getElementById('data-note-sidebar').textContent =
-  `Finnhub · CoinGecko · Updated ${stamp} · Refreshes every 30 min`;
-
-document.getElementById('data-note-markets').textContent =
-  `Stocks: Finnhub · Crypto: CoinGecko · Updated ${stamp} · Refreshes every 30 min`;
 }
 
 function renderMarketsPage() {
