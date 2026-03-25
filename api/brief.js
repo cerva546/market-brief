@@ -17,23 +17,23 @@ export default async function handler(req, res) {
   const cacheKey = `brief_v2_${dateKey}`;
 
   if (req.method === 'GET') {
-  const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
-  if (cached) {
-    await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
-    return res.status(200).json(cached);
+    const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
+    if (cached) {
+      await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
+      return res.status(200).json(cached);
+    }
+    return res.status(204).end();
   }
-  return res.status(204).end();
-}
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const existing = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
-if (existing) {
-  await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
-  return res.status(200).json(existing);
-}
+  if (existing) {
+    await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
+    return res.status(200).json(existing);
+  }
 
   const { prompt } = req.body || {};
   if (!prompt) {
@@ -113,10 +113,7 @@ if (existing) {
       ...brief
     };
 
-    // save the daily brief without expiration
     await upstashSet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey, archivedBrief);
-
-    // update archive index
     await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
 
     return res.status(200).json(archivedBrief);
@@ -183,7 +180,6 @@ async function upstashSet(url, token, key, value, exSeconds = null) {
 async function addToArchiveIndex(url, token, dateKey) {
   const indexKey = 'brief_archive_index';
   const current = (await upstashGet(url, token, indexKey)) || [];
-
   const next = [dateKey, ...current.filter(d => d !== dateKey)].slice(0, 90);
   await upstashSet(url, token, indexKey, next);
 }
