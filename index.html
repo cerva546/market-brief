@@ -574,13 +574,7 @@ function renderArchiveList() {
   }
 
   el.innerHTML = archiveItems.map((item, i) => {
-    const d = new Date(item.dateKey + 'T12:00:00');
-    const label = d.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    });
+    const label = formatArchiveDate(item.dateKey);
 
     return `<div class="archive-item" onclick="openArchiveItem(${i})">
       <div class="archive-item-date">${label}</div>
@@ -594,13 +588,7 @@ function openArchiveItem(idx) {
   const item = archiveItems[idx];
   if (!item) return;
 
-  const d = new Date(item.dateKey + 'T12:00:00');
-  const label = d.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  const label = formatArchiveDate(item.dateKey);
 
   const moversHtml = item.movers?.map(m => `
     <div class="mover-card ${m.dir}" style="margin-bottom:8px;">
@@ -638,6 +626,22 @@ async function init() {
   await loadBriefFromServer();
 }
 init();
+
+function formatArchiveDate(dateKey) {
+  if (!dateKey || !/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+    return 'Recent edition';
+  }
+
+  const [y, m, d] = dateKey.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+
+  return dt.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
 </script>
 </body>
 </html>
