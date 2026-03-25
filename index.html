@@ -129,6 +129,97 @@ footer a:hover{color:#fff;}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .fade-up{animation:fadeUp 0.5s ease forwards;}
+.subscribe-box{
+  margin-top:24px;
+  padding:18px 18px 16px;
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:3px;
+}
+
+.subscribe-kicker{
+  font-family:var(--fmono);
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+
+.subscribe-title{
+  font-family:var(--fhead);
+  font-size:24px;
+  font-weight:700;
+  line-height:1.15;
+  color:var(--ink);
+  margin-bottom:8px;
+  letter-spacing:-0.02em;
+}
+
+.subscribe-copy{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--ink3);
+  margin-bottom:14px;
+}
+
+.subscribe-form{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+}
+
+.subscribe-form input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--rule);
+  background:#fff;
+  color:var(--ink);
+  font-family:var(--fbody);
+  font-size:14px;
+  outline:none;
+  border-radius:2px;
+}
+
+.subscribe-form input:focus{
+  border-color:var(--ink3);
+}
+
+.subscribe-form button{
+  padding:12px 16px;
+  border:1px solid var(--ink);
+  background:var(--ink);
+  color:#fff;
+  font-family:var(--fmono);
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all 0.15s ease;
+}
+
+.subscribe-form button:hover{
+  background:var(--paper);
+  color:var(--ink);
+}
+
+.subscribe-msg{
+  margin-top:10px;
+  font-family:var(--fmono);
+  font-size:11px;
+  color:var(--ink3);
+  min-height:16px;
+}
+
+.subscribe-msg.ok{ color:var(--up); }
+.subscribe-msg.err{ color:var(--dn); }
+
+@media(max-width:640px){
+  .subscribe-form{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -261,19 +352,26 @@ footer a:hover{color:#fff;}
 
 <div class="toast" id="toast">Today's brief loaded</div>
 
-<div style="margin-top:20px; padding:14px; border:1px solid #ddd;">
-  <div style="font-family:monospace; font-size:10px; letter-spacing:1px; margin-bottom:8px;">
-    GET THE DAILY BRIEF
+<div class="subscribe-box">
+  <div class="subscribe-kicker">Get the Daily Brief</div>
+  <div class="subscribe-title">Delivered to your inbox</div>
+  <div class="subscribe-copy">
+    One sharp market brief each morning. Same edition as the site, sent at 8 AM ET.
   </div>
-  <input id="email-input" type="email" placeholder="Enter your email"
-    style="width:100%; padding:10px; margin-bottom:8px;" />
-  <button onclick="subscribeEmail()"
-    style="width:100%; padding:10px; cursor:pointer;">
-    Subscribe
-  </button>
-  <div id="sub-msg" style="font-size:12px; margin-top:6px;"></div>
-</div>
 
+  <div class="subscribe-form">
+    <input
+      id="email-input"
+      type="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+    />
+    <button type="button" onclick="subscribeEmail()">Subscribe</button>
+  </div>
+
+  <div id="sub-msg" class="subscribe-msg"></div>
+</div>
+  
 <footer>
   <strong>Mkt Brief</strong><br>
   Daily market intelligence · Published every morning at 8:00 AM ET<br>
@@ -694,11 +792,16 @@ function formatArchiveDate(dateKey) {
 }
 
 async function subscribeEmail() {
-  const email = document.getElementById('email-input').value;
+  const input = document.getElementById('email-input');
   const msg = document.getElementById('sub-msg');
+  const email = input.value.trim().toLowerCase();
 
-  if (!email) {
-    msg.textContent = 'Enter a valid email';
+  msg.className = 'subscribe-msg';
+  msg.textContent = '';
+
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    msg.className = 'subscribe-msg err';
+    msg.textContent = 'Enter a valid email address.';
     return;
   }
 
@@ -709,13 +812,20 @@ async function subscribeEmail() {
       body: JSON.stringify({ email })
     });
 
-    if (res.ok) {
-      msg.textContent = 'Subscribed ✅';
-    } else {
-      msg.textContent = 'Error subscribing';
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      msg.className = 'subscribe-msg err';
+      msg.textContent = data.error || 'Subscription failed.';
+      return;
     }
+
+    msg.className = 'subscribe-msg ok';
+    msg.textContent = 'You’re subscribed.';
+    input.value = '';
   } catch {
-    msg.textContent = 'Network error';
+    msg.className = 'subscribe-msg err';
+    msg.textContent = 'Network error. Please try again.';
   }
 }
 
