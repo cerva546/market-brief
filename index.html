@@ -571,7 +571,7 @@ footer a:hover{color:#fff;}
       <a href="#" class="logo" onclick="switchSection(&#39;brief&#39;);return false;">Mkt<span class="logo-dot">.</span>Brief</a>
       <div class="masthead-meta">
         <div id="issue-date">MONDAY, MARCH 23, 2026</div>
-        <div>Published 8 AM ET daily</div>
+        <div>AI-drafted · Published 8 AM ET daily</div>
         <div>Sources: Bloomberg · Reuters · WSJ · Financial Times</div>
       </div>
     </div>
@@ -614,12 +614,7 @@ footer a:hover{color:#fff;}
       <div id="sources-slot">
     <div class="section-label">Sources used in this briefing</div>
     <div class="source-chips"><span class="chip">Live Market Data</span></div></div>
-      <div id="disclaimer-slot">
-    <div class="disclaimer">
-      Briefing generated using real news headlines and live market data.
-      For informational purposes only — not financial advice.
-      Always consult a licensed advisor before making investment decisions.
-    </div></div>
+      <div id="disclaimer-slot"></div>
     </main>
 
     <aside class="sidebar">
@@ -1023,7 +1018,7 @@ function renderBrief(j) {
 
   document.getElementById('disclaimer-slot').innerHTML = `
     <div class="disclaimer">
-      AI-generated briefing based on real news headlines via NewsAPI.org and live market data.
+      AI-generated briefing using real news headlines and live market data.
       For informational purposes only &mdash; not financial advice.
       Always consult a licensed advisor before making investment decisions.
     </div>`;
