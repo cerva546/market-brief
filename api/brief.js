@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_KEY not set' });
   }
 
-  const cacheKey = `brief_v2_${getETDateKey()}`;
+  const dateKey = getETDateKey();
+  const cacheKey = `brief_v2_${dateKey}`;
 
   if (req.method === 'GET') {
     const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
@@ -94,16 +95,25 @@ export default async function handler(req, res) {
     try {
       const clean = text.replace(/```json|```/g, '').trim();
       brief = JSON.parse(clean);
-    } catch (e) {
+    } catch {
       return res.status(500).json({
         error: 'Invalid JSON from model',
         detail: text.slice(0, 500)
       });
     }
 
-    await upstashSet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey, brief, 30 * 60 * 60);
+    const archivedBrief = {
+      dateKey,
+      ...brief
+    };
 
-    return res.status(200).json(brief);
+    // save the daily brief without expiration
+    await upstashSet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey, archivedBrief);
+
+    // update archive index
+    await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
+
+    return res.status(200).json(archivedBrief);
   } catch (e) {
     return res.status(500).json({
       error: 'Generation failed',
@@ -147,11 +157,13 @@ async function upstashGet(url, token, key) {
   }
 }
 
-async function upstashSet(url, token, key, value, exSeconds) {
+async function upstashSet(url, token, key, value, exSeconds = null) {
   if (!url || !token) return;
 
+  const suffix = exSeconds ? `?EX=${exSeconds}` : '';
+
   try {
-    await fetch(`${url}/set/${key}?EX=${exSeconds}`, {
+    await fetch(`${url}/set/${key}${suffix}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -160,4 +172,12 @@ async function upstashSet(url, token, key, value, exSeconds) {
       body: JSON.stringify(value)
     });
   } catch {}
+}
+
+async function addToArchiveIndex(url, token, dateKey) {
+  const indexKey = 'brief_archive_index';
+  const current = (await upstashGet(url, token, indexKey)) || [];
+
+  const next = [dateKey, ...current.filter(d => d !== dateKey)].slice(0, 90);
+  await upstashSet(url, token, indexKey, next);
 }
