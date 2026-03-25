@@ -17,10 +17,13 @@ export default async function handler(req, res) {
   const cacheKey = `brief_v2_${dateKey}`;
 
   if (req.method === 'GET') {
-    const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
-    if (cached) return res.status(200).json(cached);
-    return res.status(204).end();
+  const cached = await upstashGet(UPSTASH_URL, UPSTASH_TOKEN, cacheKey);
+  if (cached) {
+    await addToArchiveIndex(UPSTASH_URL, UPSTASH_TOKEN, dateKey);
+    return res.status(200).json(cached);
   }
+  return res.status(204).end();
+}
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
