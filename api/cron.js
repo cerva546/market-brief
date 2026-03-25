@@ -95,12 +95,28 @@ Return ONLY valid JSON with no markdown or extra text:
     const brief = await briefRes.json();
 
     // 3. Load subscribers
-    const subRes = await fetch(`${UPSTASH_URL}/smembers/subscribers`, {
-      headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-    });
+   const subRes = await fetch(`${UPSTASH_URL}/smembers/subscribers`, {
+  headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+});
 
-    const subData = await subRes.json().catch(() => ({}));
-    const subscribers = subData.result || [];
+const subData = await subRes.json().catch(() => ({}));
+
+const subscribers = (subData.result || [])
+  .map(e => String(e).trim().toLowerCase())
+  .filter(e => /^\S+@\S+\.\S+$/.test(e));
+
+return res.status(200).json({
+  ok: true,
+  subscribers
+});
+    
+if (!subscribers.length) {
+  return res.status(200).json({
+    ok: true,
+    sent: 0,
+    message: 'No valid subscribers found'
+  });
+}
 
     // 4. If no subscribers yet, just finish successfully
     if (!subscribers.length) {
