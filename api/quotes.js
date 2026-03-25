@@ -8,32 +8,55 @@ export default async function handler(req, res) {
   const UPSTASH_URL   = process.env.UPSTASH_REDIS_REST_URL;
   const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  if (!FINNHUB_KEY) return res.status(500).json({ error: 'FINNHUB_KEY not set' });
+  if (!FINNHUB_KEY) {
+    return res.status(500).json({ error: 'FINNHUB_KEY not set' });
+  }
 
   const { symbols } = req.query;
-  if (!symbols) return res.status(400).json({ error: 'Missing symbols param' });
+  if (!symbols) {
+    return res.status(400).json({ error: 'Missing symbols param' });
+  }
 
   const syms = symbols.split(',').map(s => s.trim().toUpperCase()).slice(0, 20);
-  const cacheKey = `mkt_v3_${[...syms].sort().join('_')}`;
+  const cacheKey = `mkt_v4_${[...syms].sort().join('_')}`;
 
   let cached = null;
 
-  // Read cache first
+  // Read cache first and RETURN IT immediately if available
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     try {
       const r = await fetch(`${UPSTASH_URL}/get/${cacheKey}`, {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
+
       if (r.ok) {
         const d = await r.json();
         if (d.result) {
           cached = JSON.parse(d.result);
+
+          // support old cache format
+          if (Array.isArray(cached)) {
+            cached = {
+              updatedAt: null,
+              results: cached
+            };
+          }
+
+          if (cached?.results?.length) {
+            const hasData = cached.results.some(q => !q.error && q.price);
+            if (hasData) {
+              return res.status(200).json({
+                results: cached.results,
+                cached: true,
+                updatedAt: cached.updatedAt || null
+              });
+            }
+          }
         }
       }
     } catch {}
   }
 
-  // helper: small delay to avoid hammering Finnhub
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   async function fetchQuote(sym) {
@@ -69,7 +92,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Fetch in small batches instead of all at once
     const fresh = [];
     const batchSize = 3;
 
@@ -83,10 +105,10 @@ export default async function handler(req, res) {
       }
     }
 
-    // If cache exists, fill failed fresh symbols with cached values
     let merged = fresh;
-    if (cached && Array.isArray(cached)) {
-      const cachedMap = Object.fromEntries(cached.map(q => [q.sym, q]));
+
+    if (cached?.results && Array.isArray(cached.results)) {
+      const cachedMap = Object.fromEntries(cached.results.map(q => [q.sym, q]));
       merged = fresh.map(q => {
         if (!q.error) return q;
         return cachedMap[q.sym] || q;
@@ -94,8 +116,11 @@ export default async function handler(req, res) {
     }
 
     const hasData = merged.some(q => !q.error && q.price);
+    const payload = {
+      updatedAt: new Date().toISOString(),
+      results: merged
+    };
 
-    // Save merged results back to cache
     if (hasData && UPSTASH_URL && UPSTASH_TOKEN) {
       try {
         await fetch(`${UPSTASH_URL}/set/${cacheKey}?EX=${30 * 60}`, {
@@ -104,17 +129,26 @@ export default async function handler(req, res) {
             Authorization: `Bearer ${UPSTASH_TOKEN}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(JSON.stringify(merged))
+          body: JSON.stringify(JSON.stringify(payload))
         });
       } catch {}
     }
 
-    return res.status(200).json({ results: merged });
+    return res.status(200).json({
+      results: merged,
+      cached: false,
+      updatedAt: payload.updatedAt
+    });
   } catch (e) {
-    // fall back to cache if available
-    if (cached) {
-      return res.status(200).json({ results: cached, cached: true, stale: true });
+    if (cached?.results) {
+      return res.status(200).json({
+        results: cached.results,
+        cached: true,
+        stale: true,
+        updatedAt: cached.updatedAt || null
+      });
     }
+
     return res.status(500).json({ error: e.message });
   }
 }
