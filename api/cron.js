@@ -13,23 +13,32 @@ export default async function handler(req, res) {
 
     // 2. If not, generate it
     if (briefRes.status !== 200) {
-      const prompt = `You are the editor of Mkt Brief, a daily market briefing for general readers.
+ const prompt = `You are the editor of Mkt Brief, a daily market briefing for general readers.
 
 Before writing, rank all available stories by likely market impact and general importance, then write only from the top-ranked themes.
 
 Your job is to write the one most relevant market brief of the day in clear, simple, intelligent language.
 
 IMPORTANT PRIORITY:
-Choose the biggest story or stories actually driving markets and investor attention today.
+Choose the biggest story or stories actually driving markets and investor attention in this edition window.
 Do not lead with minor or niche business stories unless they are clearly the main market-moving development.
 
-Focus first on the topics most likely to matter to a broad audience and to financial markets, such as:
+FOCUS FIRST ON:
 - major geopolitical events, including the Middle East, war, energy shocks, or global conflict
 - major U.S. political actions, including Trump, the White House, Congress, tariffs, trade, or regulation
 - the Fed, rates, inflation, jobs, consumer spending, recession risk, and major macro data
 - major stock market moves
 - major crypto moves
-- major company news only if it is genuinely one of the biggest stories of the day
+- major company news only if it is genuinely one of the biggest stories in this edition window
+
+TIME RULES:
+- Treat this as the current 8:00 AM ET daily edition.
+- Only prioritize developments that are new, materially updated, or newly market-moving since the previous 8:00 AM ET edition.
+- If a story is ongoing, include it only if there is a meaningful fresh development in this edition window.
+- Do not present old developments as if they just happened.
+- Avoid phrases like "today," "Tuesday," "this morning," or similar unless they are definitely correct for the current Eastern Time edition date.
+- Prefer phrasing like "in the latest update," "since yesterday's edition," "overnight," or "in the newest reporting" when needed.
+- If there is not enough fresh information on a story, leave it out.
 
 WRITING STYLE:
 - write for an average reader, not a finance professional
@@ -43,21 +52,21 @@ WRITING STYLE:
 - do not include quotes from named people
 - only use what is supported by the provided headlines and market data
 
-EDITORIAL RULES:
-- rank the day’s news by importance before writing
-- lead with the biggest and most market-relevant development
-- if geopolitical risk, oil, rates, Fed policy, tariffs, or a major political development is the dominant story, make that the headline and lead
-- if a niche story is less important than a broader macro or geopolitical theme, mention it later or leave it out
-- do not force equal attention to every headline
-- it is better to cover 2–4 important themes well than 6 weak ones badly
+EDITORIAL QUALITY RULES:
+- do not repeat the same idea across intro, macro, and events
+- each paragraph must add something new
+- the intro explains the main fresh development
+- the macro section explains why it matters for markets
+- the events section includes only additional developments not already covered
+- it is better to cover 2–4 important fresh themes well than 6 weak ones badly
 
 Return ONLY valid JSON with no markdown or extra text:
 {
   "headline": "short, strong headline, max 12 words",
   "deck": "one clear sentence that sums up the day",
-  "intro": "3-4 sentence opening paragraph explaining the main market story in simple language",
-  "macro": "one paragraph on the main big-picture forces moving markets today",
-  "events": "one paragraph on the most important company, political, economic, or crypto developments worth knowing",
+  "intro": "3-4 sentence opening paragraph explaining the main fresh market story in simple language",
+  "macro": "one paragraph on the main big-picture forces moving markets in this edition window",
+  "events": "one paragraph on the most important additional company, political, economic, or crypto developments worth knowing that were not already covered",
   "movers": [
     {"sym":"SPY","name":"S&P 500","dir":"up","pct":"0.4"},
     {"sym":"BTC","name":"Bitcoin","dir":"up","pct":"1.2"}
@@ -131,7 +140,7 @@ const subscribers = (subData.result || [])
   <div style="max-width:700px;margin:0 auto;padding:32px 20px;font-family:Arial,sans-serif;color:#111;background:#faf8f2;">
 
     <div style="font-size:12px;margin-bottom:14px;">
-      <a href="https://mktbrief.com" style="color:#8a6a00;text-decoration:none;">
+      <a href="${SITE_URL}" style="color:#8a6a00;text-decoration:none;">
         Read this brief online →
       </a>
     </div>
@@ -141,7 +150,7 @@ const subscribers = (subData.result || [])
     </div>
 
     <h1 style="font-size:36px;line-height:1.1;margin:0 0 12px;font-family:Georgia,serif;">
-      <a href="https://mktbrief.com" style="color:#111;text-decoration:none;">
+      <a href="${SITE_URL}" style="color:#111;text-decoration:none;">
         ${brief.headline || ''}
       </a>
     </h1>
@@ -159,7 +168,7 @@ const subscribers = (subData.result || [])
 
     <p style="font-size:13px;color:#666;margin:0 0 8px;">
       Continue reading at
-      <a href="https://mktbrief.com" style="color:#8a6a00;text-decoration:none;">
+      <a href="${SITE_URL}" style="color:#8a6a00;text-decoration:none;">
         mktbrief.com
       </a>
     </p>
