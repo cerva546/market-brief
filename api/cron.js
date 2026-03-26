@@ -128,18 +128,47 @@ const subscribers = (subData.result || [])
 
     // 5. Send email
     const html = `
-      <div style="max-width:700px;margin:0 auto;padding:32px 20px;font-family:Arial,sans-serif;color:#111;background:#faf8f2;">
-        <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6a00;margin-bottom:16px;">Mkt Brief</div>
-        <h1 style="font-size:36px;line-height:1.1;margin:0 0 12px;font-family:Georgia,serif;">${brief.headline || ''}</h1>
-        <p style="font-size:20px;line-height:1.5;color:#555;font-style:italic;margin:0 0 24px;">${brief.deck || ''}</p>
-        <p style="font-size:16px;line-height:1.8;">${brief.intro || ''}</p>
-        <p style="font-size:16px;line-height:1.8;">${brief.macro || ''}</p>
-        ${brief.events ? `<p style="font-size:16px;line-height:1.8;">${brief.events}</p>` : ''}
-        <p style="font-size:16px;line-height:1.8;"><strong>What to watch:</strong> ${brief.close || ''}</p>
-        <hr style="margin:28px 0;border:none;border-top:1px solid #ddd;">
-        <p style="font-size:12px;color:#666;">This email was generated automatically from today’s published Mkt Brief edition.</p>
-      </div>
-    `;
+  <div style="max-width:700px;margin:0 auto;padding:32px 20px;font-family:Arial,sans-serif;color:#111;background:#faf8f2;">
+
+    <div style="font-size:12px;margin-bottom:14px;">
+      <a href="https://mktbrief.com" style="color:#8a6a00;text-decoration:none;">
+        Read this brief online →
+      </a>
+    </div>
+
+    <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6a00;margin-bottom:16px;">
+      Mkt Brief
+    </div>
+
+    <h1 style="font-size:36px;line-height:1.1;margin:0 0 12px;font-family:Georgia,serif;">
+      <a href="https://mktbrief.com" style="color:#111;text-decoration:none;">
+        ${brief.headline || ''}
+      </a>
+    </h1>
+
+    <p style="font-size:20px;line-height:1.5;color:#555;font-style:italic;margin:0 0 24px;">
+      ${brief.deck || ''}
+    </p>
+
+    <p style="font-size:16px;line-height:1.8;">${brief.intro || ''}</p>
+    <p style="font-size:16px;line-height:1.8;">${brief.macro || ''}</p>
+    ${brief.events ? `<p style="font-size:16px;line-height:1.8;">${brief.events}</p>` : ''}
+    <p style="font-size:16px;line-height:1.8;"><strong>What to watch:</strong> ${brief.close || ''}</p>
+
+    <hr style="margin:28px 0;border:none;border-top:1px solid #ddd;">
+
+    <p style="font-size:13px;color:#666;margin:0 0 8px;">
+      Continue reading at
+      <a href="https://mktbrief.com" style="color:#8a6a00;text-decoration:none;">
+        mktbrief.com
+      </a>
+    </p>
+
+    <p style="font-size:12px;color:#666;">
+      This email was generated automatically from today’s published Mkt Brief edition.
+    </p>
+  </div>
+`;
 const text = `
 ${brief.headline || ''}
 
