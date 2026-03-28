@@ -105,38 +105,67 @@ Return ONLY valid JSON with no markdown or extra text:
       return res.status(200).json({ ok: true, generated: true, sent: 0, message: 'No subscribers yet' });
     }
 
-    /* Build email */
+  // 5. Build email
     const html = `
 <div style="max-width:680px;margin:0 auto;padding:32px 20px;font-family:Arial,sans-serif;color:#111;background:#faf8f2;">
   <div style="font-size:12px;margin-bottom:14px;">
     <a href="${SITE_URL}" style="color:#8a6a00;text-decoration:none;">Read this brief online →</a>
   </div>
-  <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6a00;margin-bottom:16px;">Mkt Brief</div>
+
+  <div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6a00;margin-bottom:16px;">
+    Mkt Brief
+  </div>
+
   <h1 style="font-size:32px;line-height:1.1;margin:0 0 12px;font-family:Georgia,serif;">
     <a href="${SITE_URL}" style="color:#111;text-decoration:none;">${brief.headline || ''}</a>
   </h1>
-  <p style="font-size:18px;line-height:1.5;color:#555;font-style:italic;margin:0 0 24px;">${brief.deck || ''}</p>
+
+  <p style="font-size:18px;line-height:1.5;color:#555;font-style:italic;margin:0 0 24px;">
+    ${brief.deck || ''}
+  </p>
+
   <p style="font-size:16px;line-height:1.8;">${brief.intro || ''}</p>
   <p style="font-size:16px;line-height:1.8;">${brief.macro || ''}</p>
   ${brief.events ? `<p style="font-size:16px;line-height:1.8;">${brief.events}</p>` : ''}
   <p style="font-size:16px;line-height:1.8;"><strong>What to watch:</strong> ${brief.close || ''}</p>
+
   <hr style="margin:28px 0;border:none;border-top:1px solid #ddd;">
+
   <p style="font-size:13px;color:#666;margin:0 0 8px;">
-    Continue reading at <a href="${SITE_URL}" style="color:#8a6a00;text-decoration:none;">mktbrief.com</a>
+    Continue reading at
+    <a href="${SITE_URL}" style="color:#8a6a00;text-decoration:none;">mktbrief.com</a>
   </p>
-  <p style="font-size:11px;color:#999;margin:0;">
+
+  <p style="font-size:11px;color:#999;margin:0 0 10px;">
     AI-generated from real news headlines and market data. Not financial advice.
+  </p>
+
+  <p style="font-size:11px;color:#999;line-height:1.7;margin:0;">
+    You’re receiving this because you subscribed to Mkt Brief.
+    <br>
+    <a href="${SITE_URL}/api/unsubscribe" style="color:#8a6a00;text-decoration:none;">Unsubscribe</a>
   </p>
 </div>`;
 
     const text = [
-      brief.headline, '', brief.deck, '',
-      brief.intro, '', brief.macro, '',
-      brief.events || '', '',
-      `What to watch: ${brief.close || ''}`, '',
-      `Read online: ${SITE_URL}`
+      brief.headline || '',
+      '',
+      brief.deck || '',
+      '',
+      brief.intro || '',
+      '',
+      brief.macro || '',
+      '',
+      brief.events || '',
+      '',
+      `What to watch: ${brief.close || ''}`,
+      '',
+      `Read online: ${SITE_URL}`,
+      '',
+      `Unsubscribe: ${SITE_URL}/api/unsubscribe`
     ].join('\n');
 
+    // 6. Send via Resend
     const { Resend } = await import('resend');
     const resend = new Resend(RESEND_KEY);
 
@@ -151,11 +180,19 @@ Return ONLY valid JSON with no markdown or extra text:
     });
 
     if (error) {
-      return res.status(500).json({ ok: false, error: 'Resend send failed', detail: error });
+      return res.status(500).json({
+        ok: false,
+        error: 'Resend send failed',
+        detail: error
+      });
     }
 
-    return res.status(200).json({ ok: true, generated: true, sent: subscribers.length, resendId: data?.id || null });
-
+    return res.status(200).json({
+      ok: true,
+      generated: true,
+      sent: subscribers.length,
+      resendId: data?.id || null
+    });
   } catch (e) {
     return res.status(500).json({ ok: false, error: e.message });
   }
